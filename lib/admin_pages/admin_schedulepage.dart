@@ -17,7 +17,7 @@ class AdminScheduleUploadScreen extends StatelessWidget {
 
       // Show success message or navigate back to previous screen
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Schedule uploaded successfully')),
+        const SnackBar(content: Text('Schedule uploaded successfully')),
       );
 
       // Clear the text fields after uploading
@@ -26,7 +26,7 @@ class AdminScheduleUploadScreen extends StatelessWidget {
     } else {
       // Show error message if any field is empty
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Please fill all fields')),
+        const SnackBar(content: Text('Please fill all fields')),
       );
     }
   }
@@ -35,7 +35,7 @@ class AdminScheduleUploadScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Upload Schedule'),
+        title: const Text('Upload Schedule'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -44,17 +44,17 @@ class AdminScheduleUploadScreen extends StatelessWidget {
           children: [
             TextField(
               controller: _timeController,
-              decoration: InputDecoration(labelText: 'Time'),
+              decoration: const InputDecoration(labelText: 'Time'),
             ),
-            SizedBox(height: 20.0),
+            const SizedBox(height: 20.0),
             TextField(
               controller: _subjectController,
-              decoration: InputDecoration(labelText: 'Subject'),
+              decoration: const InputDecoration(labelText: 'Subject'),
             ),
-            SizedBox(height: 20.0),
+            const SizedBox(height: 20.0),
             ElevatedButton(
               onPressed: () => _uploadSchedule(context),
-              child: Text('Upload Schedule'),
+              child: const Text('Upload Schedule'),
             ),
           ],
         ),
