@@ -30,7 +30,7 @@ class AdminLoginScreen extends StatelessWidget {
       //{
       Navigator.pop(context);
       Navigator.push(context,
-          MaterialPageRoute(builder: (context) => AdminDashboardScreen()));
+          MaterialPageRoute(builder: (context) => AdminScheduleUploadScreen()));
       // } else {
       //   showDialog(
       //     context: context,
