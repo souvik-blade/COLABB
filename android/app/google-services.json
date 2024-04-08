@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "106111202410",
+    "project_id": "colabb-fbf0c",
+    "storage_bucket": "colabb-fbf0c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:106111202410:android:a65ea848539037c1a0c613",
+        "android_client_info": {
+          "package_name": "com.example.colabb"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDwdT4iCwEywCtIyPj5WIYusYYFuXNzjF8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
