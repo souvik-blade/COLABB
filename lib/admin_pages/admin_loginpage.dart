@@ -1,10 +1,9 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:colabb/admin_pages/admin_homepage.dart';
-import 'package:colabb/admin_pages/admin_schedulepage.dart';
+// ignore_for_file: use_build_context_synchronously
+
+import 'package:colabb/admin_pages/admin_assignmentpage.dart';
 import 'package:colabb/components/my_button.dart';
 import 'package:colabb/components/my_textfield.dart';
 import 'package:colabb/services/auth/auth_service.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class AdminLoginScreen extends StatelessWidget {
@@ -22,6 +21,7 @@ class AdminLoginScreen extends StatelessWidget {
         _emailController.text,
         _passwordController.text,
       );
+
     } catch (e) {
       // Handle login errors
       showDialog(

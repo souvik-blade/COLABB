@@ -1,6 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:colabb/components/assignment_tile.dart';
-import 'package:colabb/components/my_bottomappbar.dart';
 import 'package:flutter/material.dart';
+import '../components/my_bottomappbar.dart';
 
 class AssignmentPage extends StatelessWidget {
   static const String id = "assignmentid";
@@ -14,15 +15,38 @@ class AssignmentPage extends StatelessWidget {
         backgroundColor: Colors.transparent,
       ),
       bottomNavigationBar: MyBottomAppBar(),
-      body: ListView.builder(
-          itemCount: 10,
-          itemBuilder: (BuildContext, index) {
-            return AssignmentTile(
-              aboutAssignment: "MAke ",
-              assignedDate: "12.12.12",
-              dueDate: "12''12'",
+      body: SafeArea(
+        child: StreamBuilder<QuerySnapshot>(
+          stream: FirebaseFirestore.instance
+              .collection('assignment')
+              .orderBy("lastDate", descending: false)
+              .snapshots(),
+          builder:
+              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (snapshot.hasError) {
+              return Text('Error: ${snapshot.error}');
+            }
+
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(child: const CircularProgressIndicator());
+            }
+
+            return ListView.builder(
+              itemCount: snapshot.data!.docs.length,
+              itemBuilder: (BuildContext context, int index) {
+                DocumentSnapshot document = snapshot.data!.docs[index];
+                print(index.toString());
+                return AssignmentTile(
+                  aboutAssignment: document['Instructions'],
+                  assignedDate: document['assignedOn'],
+                  dueDate: document['lastDate'],
+                  facultyName: document['facultyName'],
+                );
+              },
             );
-          }),
+          },
+        ),
+      ),
     );
   }
 }
