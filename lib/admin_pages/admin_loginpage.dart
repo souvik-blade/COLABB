@@ -22,22 +22,6 @@ class AdminLoginScreen extends StatelessWidget {
         _passwordController.text,
       );
 
-      // Check if the signed-in user is an admin (you need to implement this logic)
-      // For example, you can store user roles in Firestore and check if the user is an admin here
-
-      // If user is an admin, navigate to admin dashboard
-      //{
-      Navigator.pop(context);
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => AdminAssignmentPage()));
-      // } else {
-      //   showDialog(
-      //     context: context,
-      //     builder: (context) => AlertDialog(
-      //       title: Text("Invalid admin ID"),
-      //     ),
-      //   );
-      // }
     } catch (e) {
       // Handle login errors
       showDialog(
