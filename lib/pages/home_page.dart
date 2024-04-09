@@ -7,6 +7,7 @@ import 'package:colabb/services/chat/chat_service.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {
+  static const String id = "homepageid";
   HomePage({super.key});
 
   //chat & auth services

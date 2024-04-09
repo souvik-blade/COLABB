@@ -29,7 +29,7 @@ class AdminLoginScreen extends StatelessWidget {
       // If user is an admin, navigate to admin dashboard
       //{
       Navigator.pop(context);
-      Navigator.push(context,
+      Navigator.pushReplacement(context,
           MaterialPageRoute(builder: (context) => AdminScheduleUploadScreen()));
       // } else {
       //   showDialog(

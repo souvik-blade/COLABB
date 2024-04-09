@@ -1,5 +1,6 @@
 import 'package:colabb/admin_pages/admin_loginpage.dart';
 import 'package:colabb/pages/assignments_page.dart';
+import 'package:colabb/pages/home_page.dart';
 import 'package:colabb/pages/mentor_grouppage.dart';
 import 'package:colabb/pages/schedule_page.dart';
 import 'package:colabb/services/auth/auth_gate.dart';
@@ -27,6 +28,7 @@ class Colabb extends StatelessWidget {
       home: AuthGate(),
       theme: Provider.of<ThemeProvider>(context).themeData,
       routes: {
+        HomePage.id: (context) => HomePage(),
         SettingsPage.id: (context) => SettingsPage(),
         SchedulePage.id: (context) => SchedulePage(),
         AssignmentPage.id: (context) => AssignmentPage(),
