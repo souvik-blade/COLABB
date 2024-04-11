@@ -1,6 +1,8 @@
 import 'package:colabb/admin_pages/admin_assignmentpage.dart';
 import 'package:colabb/admin_pages/admin_schedulepage.dart';
+import 'package:colabb/admin_pages/admin_settings.dart';
 import 'package:colabb/admin_pages/admin_statspage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -12,14 +14,12 @@ class AdminDashboardScreen extends StatefulWidget {
 }
 
 class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-
-  // Function to handle logout
-  void _logout() async {
-    await _auth.signOut();
-    // Navigate back to login screen or any other screen as needed
-    Navigator.pop(context);
-  }
+  // // Function to handle logout
+  // void _logout() async {
+  //   await _auth.signOut();
+  //   // Navigate back to login screen or any other screen as needed
+  //   Navigator.pop(context);
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -35,8 +35,18 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
             backgroundColor: Colors.transparent,
             actions: [
               IconButton(
-                icon: const Icon(Icons.logout),
-                onPressed: _logout,
+                icon: const Icon(
+                  CupertinoIcons.gear,
+                  size: 30,
+                ),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => AdminSettingsPage(),
+                    ),
+                  );
+                },
               ),
             ],
             centerTitle: true,
@@ -61,7 +71,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                     labelColor: Colors.white,
                     unselectedLabelColor: Colors.black54,
                     tabs: [
-                      TabItem(title: 'Assignment', count: 6),
+                      TabItem(title: 'Assignment', count: 1),
                       TabItem(title: 'Schedule', count: 3),
                       TabItem(title: 'App Stats', count: 1),
                     ],
