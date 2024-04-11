@@ -11,10 +11,12 @@ class AssignmentPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Assignments"),
-        backgroundColor: Colors.transparent,
+        toolbarHeight: 100,
+        title: const Text(
+          " Assigments",
+          style: TextStyle(fontSize: 50, fontWeight: FontWeight.w200),
+        ),
       ),
-      bottomNavigationBar: MyBottomAppBar(),
       body: SafeArea(
         child: StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore.instance

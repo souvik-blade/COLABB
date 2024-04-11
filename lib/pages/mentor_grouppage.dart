@@ -63,10 +63,14 @@ class _MentorRoomState extends State<MentorRoom> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Mentor's Room"),
+        toolbarHeight: 100,
+        title: const Text(
+          "Mentor's Room",
+          style: TextStyle(fontSize: 50, fontWeight: FontWeight.w200),
+        ),
         backgroundColor: Colors.transparent,
       ),
-      bottomNavigationBar: MyBottomAppBar(),
+      // bottomNavigationBar: MyBottomAppBar(),
       body: Container(
         margin: EdgeInsets.only(top: 32),
         alignment: Alignment.center,

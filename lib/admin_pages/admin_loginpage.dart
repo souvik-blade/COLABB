@@ -12,6 +12,13 @@ class AdminLoginScreen extends StatelessWidget {
   final TextEditingController _passwordController = TextEditingController();
 
   void _signInAsAdmin(BuildContext context) async {
+    // Show circular progress indicator
+    // showDialog(
+    //   context: context,
+    //   barrierDismissible: false, // prevent user from dismissing the dialog
+    //   builder: (context) => Center(child: CircularProgressIndicator()),
+    // );
+
     // auth service
     final authService = AuthService();
 
@@ -22,7 +29,12 @@ class AdminLoginScreen extends StatelessWidget {
         _passwordController.text,
       );
 
+      // Hide the progress indicator after login is successful
+      Navigator.of(context).pop(); // close the dialog
     } catch (e) {
+      // Hide the progress indicator in case of an error
+      Navigator.of(context).pop(); // close the dialog
+
       // Handle login errors
       showDialog(
         context: context,

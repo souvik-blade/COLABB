@@ -31,7 +31,7 @@ class AuthGate extends StatelessWidget {
                   }
                 } else {
                   // Show error message if unable to check admin status
-                  return Text('Error checking admin status');
+                  return Center(child: CircularProgressIndicator());
                 }
               },
             );
