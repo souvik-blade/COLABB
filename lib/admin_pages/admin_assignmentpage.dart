@@ -7,7 +7,7 @@ import 'package:vph_web_date_picker/vph_web_date_picker.dart';
 import 'package:intl/intl.dart';
 
 class AdminAssignmentPage extends StatefulWidget {
-  AdminAssignmentPage({super.key});
+  const AdminAssignmentPage({super.key});
 
   @override
   State<AdminAssignmentPage> createState() => _AdminAssignmentPageState();
@@ -69,9 +69,6 @@ class _AdminAssignmentPageState extends State<AdminAssignmentPage> {
     final assignedKey = GlobalKey();
     final deadlineKey = GlobalKey();
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Upload Assignment'),
-      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(

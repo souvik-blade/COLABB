@@ -25,9 +25,21 @@ class LoginPage extends StatelessWidget {
     // catch anty errors
     catch (e) {
       showDialog(
+        // ignore: use_build_context_synchronously
         context: context,
         builder: (context) => AlertDialog(
-          title: Text(e.toString()),
+          content: SizedBox(
+            height: 80,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.warning_amber_rounded),
+                Text(e.toString() == "Exception: channel-errot"
+                    ? "Enter the Correct Details"
+                    : e.toString())
+              ],
+            ),
+          ),
         ),
       );
     }
@@ -42,11 +54,11 @@ class LoginPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(
-              Icons.message,
-              size: 60,
+              Icons.dashboard_rounded,
+              size: 70,
               color: Theme.of(context).colorScheme.primary,
             ),
-            SizedBox(height: 50),
+            const SizedBox(height: 50),
             Center(
               child: Text(
                 "Welcome back, you've been missed!",
@@ -56,26 +68,26 @@ class LoginPage extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 25),
+            const SizedBox(height: 25),
             MyTextField(
               hintText: "e-mail",
               obscureText: false,
               controller: _emailController,
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             MyTextField(
               hintText: "password",
               obscureText: true,
               controller: _pwController,
             ),
-            SizedBox(
+            const SizedBox(
               height: 25,
             ),
             MyButton(
               onTap: () => login(context),
               text: "Login",
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -97,7 +109,7 @@ class LoginPage extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: 48),
+            const SizedBox(height: 48),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

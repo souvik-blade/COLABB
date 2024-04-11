@@ -5,6 +5,8 @@ class AdminScheduleUploadScreen extends StatelessWidget {
   final TextEditingController _timeController = TextEditingController();
   final TextEditingController _subjectController = TextEditingController();
 
+  //  AdminScheduleUploadScreen({super.key});
+
   void _uploadSchedule(BuildContext context) async {
     String time = _timeController.text;
     String subject = _subjectController.text;
@@ -34,9 +36,6 @@ class AdminScheduleUploadScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Upload Schedule'),
-      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(

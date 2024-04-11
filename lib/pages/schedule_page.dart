@@ -1,4 +1,3 @@
-import 'package:colabb/components/my_bottomappbar.dart';
 import 'package:colabb/components/schedule_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -11,10 +10,12 @@ class SchedulePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Schedule"),
-        backgroundColor: Colors.transparent,
+        toolbarHeight: 100,
+        title: const Text(
+          " Schedule",
+          style: TextStyle(fontSize: 50, fontWeight: FontWeight.w200),
+        ),
       ),
-      bottomNavigationBar: MyBottomAppBar(),
       body: SafeArea(
         child: StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore.instance
