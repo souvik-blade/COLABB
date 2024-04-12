@@ -42,7 +42,7 @@ class _SchedulePageState extends State<SchedulePage> {
             Text('Thursday', style: TextStyle(fontSize: 16)),
             Text('Friday', style: TextStyle(fontSize: 16)),
           ],
-          views: const [
+          views: [
             Monday(),
             Tuesday(),
             Wednesday(),

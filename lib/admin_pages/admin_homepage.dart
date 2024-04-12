@@ -1,4 +1,7 @@
-
+import 'package:colabb/admin_pages/admin_assignmentpage.dart';
+import 'package:colabb/admin_pages/admin_schedulepage.dart';
+import 'package:colabb/admin_pages/admin_settings.dart';
+import 'package:colabb/admin_pages/admin_statspage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -32,10 +35,6 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
             backgroundColor: Colors.transparent,
             actions: [
               IconButton(
-
-                icon: Icon(Icons.logout_rounded),
-                onPressed: _logout,
-
                 icon: const Icon(
                   CupertinoIcons.gear,
                   size: 30,
@@ -48,7 +47,6 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                     ),
                   );
                 },
-
               ),
             ],
             centerTitle: true,
