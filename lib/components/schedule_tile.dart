@@ -20,26 +20,17 @@ class ScheduleTile extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            height: 10,
-            width: 100,
-            decoration: const BoxDecoration(
-                color: Colors.amber,
-                borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(10),
-                    topLeft: Radius.circular(10))),
-            child: Row(
-              children: [
-                Text(from,
-                    style: const TextStyle(
-                        fontSize: 20, fontWeight: FontWeight.w400)),
-                const Text(" - "),
-                Text(to,
-                    style: const TextStyle(
-                        fontSize: 20, fontWeight: FontWeight.w400)),
-                const SizedBox(width: 20),
-              ],
-            ),
+          Row(
+            children: [
+              Text(from,
+                  style: const TextStyle(
+                      fontSize: 20, fontWeight: FontWeight.w400)),
+              const Text(" - "),
+              Text(to,
+                  style: const TextStyle(
+                      fontSize: 20, fontWeight: FontWeight.w400)),
+              const SizedBox(width: 20),
+            ],
           ),
           Text(
             subject,
