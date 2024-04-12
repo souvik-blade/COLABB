@@ -21,19 +21,21 @@ class TabItem extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
           ),
           count > 0
-              ? Container(
-                  margin: const EdgeInsetsDirectional.only(start: 5),
-                  padding: const EdgeInsets.all(3),
-                  decoration: BoxDecoration(
-                    color: Colors.grey.shade200,
-                    shape: BoxShape.circle,
-                  ),
-                  child: Center(
-                    child: Text(
-                      count > 9 ? "9+" : count.toString(),
-                      style: const TextStyle(
-                        color: Colors.black54,
-                        fontSize: 10,
+              ? Expanded(
+                  child: Container(
+                    margin: const EdgeInsetsDirectional.only(start: 5),
+                    padding: const EdgeInsets.all(3),
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade200,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Center(
+                      child: Text(
+                        count > 9 ? "9+" : count.toString(),
+                        style: const TextStyle(
+                          color: Colors.black54,
+                          fontSize: 10,
+                        ),
                       ),
                     ),
                   ),

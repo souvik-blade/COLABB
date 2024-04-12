@@ -269,22 +269,24 @@ class _AdminAssignmentPageState extends State<AdminAssignmentPage> {
                   controller: _instructionController,
                 ),
               ),
-              const SizedBox(height: 20.0),
+              //const SizedBox(height: 20.0),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Expanded(
                     child: UploadButton(
-                        text: "Upload Assignment",
+                        text: "Add PDF",
+                        onTap: () {
+                          print("");
+                        }),
+                  ),
+                  Expanded(
+                    child: UploadButton(
+                        text: "Upload",
                         onTap: () {
                           _uploadAssignnemt(context);
                         }),
                   ),
-                  UploadButton(
-                      text: "Add PDF",
-                      onTap: () {
-                        print("");
-                      }),
                 ],
               ),
             ],
