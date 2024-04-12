@@ -4,7 +4,6 @@ import 'package:colabb/admin_pages/admin_settings.dart';
 import 'package:colabb/admin_pages/admin_statspage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 import '../components/tab_item.dart';
 
@@ -81,9 +80,9 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
             )),
         body: TabBarView(
           children: [
-            const AdminAssignmentPage(),
+            AdminAssignmentPage(),
             AdminScheduleUploadScreen(),
-            const AdminStatsPage()
+            AdminStatsPage()
           ],
         ),
       ),

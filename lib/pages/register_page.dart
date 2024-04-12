@@ -4,6 +4,8 @@ import '../components/my_textfield.dart';
 import 'package:flutter/material.dart';
 
 class RegisterPage extends StatelessWidget {
+  final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _pwController = TextEditingController();
   final TextEditingController _confirmPwController = TextEditingController();
@@ -15,12 +17,14 @@ class RegisterPage extends StatelessWidget {
 
     final _auth = AuthService();
 
-    //try sign up ifpasswords match
+    //try sign up if passwords match
     if (_pwController.text == _confirmPwController.text) {
       try {
         _auth.signUpWithEmailPassword(
           _emailController.text,
           _pwController.text,
+          _firstNameController.text,
+          _lastNameController.text,
         );
       }
 
@@ -70,6 +74,18 @@ class RegisterPage extends StatelessWidget {
               ),
             ),
             SizedBox(height: 25),
+            MyTextField(
+              hintText: "first name",
+              obscureText: false,
+              controller: _firstNameController,
+            ),
+            SizedBox(height: 10),
+            MyTextField(
+              hintText: "last name",
+              obscureText: false,
+              controller: _lastNameController,
+            ),
+            SizedBox(height: 10),
             MyTextField(
               hintText: "e-mail",
               obscureText: false,

@@ -144,9 +144,9 @@ class _HomePageState extends State<HomePage> {
   Widget _buildUserListItem(
       Map<String, dynamic> userData, BuildContext context) {
     // display all users except current user
-    if (userData["email"] != _authService.getCurrentUser()!.email) {
+    if (userData["email"] != _authService.getCurrentUser()?.email) {
       return UserTile(
-        text: userData["email"],
+        text: userData["name"],
         onTap: () {
           // tapped on a user -> go to chat page
           Navigator.push(
