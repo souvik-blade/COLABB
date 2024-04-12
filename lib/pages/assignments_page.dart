@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:colabb/components/assignment_tile.dart';
 import 'package:flutter/material.dart';
-import '../components/my_bottomappbar.dart';
+
+import '../components/assignment_tile.dart';
 
 class AssignmentPage extends StatelessWidget {
   static const String id = "assignmentid";

@@ -1,4 +1,4 @@
-import 'package:colabb/themes/theme_provider.dart';
+import '../themes/theme_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

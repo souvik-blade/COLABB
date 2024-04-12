@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:colabb/models/message.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
+import '../../models/message.dart';
 
 class ChatService {
   // get instance of firestore & auth

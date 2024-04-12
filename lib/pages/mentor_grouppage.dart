@@ -1,5 +1,5 @@
-import 'package:colabb/components/my_bottomappbar.dart';
-import 'package:colabb/components/my_textfield.dart';
+import '../components/my_bottomappbar.dart';
+import '../components/my_textfield.dart';
 import 'package:flutter/material.dart';
 
 class MentorRoom extends StatefulWidget {

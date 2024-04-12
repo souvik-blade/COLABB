@@ -1,9 +1,9 @@
-import 'package:colabb/themes/dark_mode.dart';
-import 'package:colabb/themes/light_mode.dart';
+import 'dark_mode.dart';
+import 'light_mode.dart';
 import 'package:flutter/material.dart';
 
 class ThemeProvider extends ChangeNotifier {
-  ThemeData _themeData = lightMode;
+  ThemeData _themeData = darkMode;
 
   ThemeData get themeData => _themeData;
 
@@ -20,5 +20,22 @@ class ThemeProvider extends ChangeNotifier {
     } else {
       themeData = lightMode;
     }
+  }
+}
+
+class TextFieldDecoration {
+  static InputDecoration getDecoration({required String hintText}) {
+    return InputDecoration(
+      enabledBorder: const OutlineInputBorder(
+        borderSide: BorderSide(color: Colors.grey),
+      ),
+      focusedBorder: const OutlineInputBorder(
+        borderSide: BorderSide(color: Colors.blue),
+      ),
+      fillColor: Colors.grey[200],
+      filled: true,
+      hintText: hintText ?? "Enter Text",
+      hintStyle: const TextStyle(color: Colors.blue),
+    );
   }
 }

@@ -1,7 +1,8 @@
-import 'package:colabb/services/auth/auth_service.dart';
-import 'package:colabb/themes/theme_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import '../services/auth/auth_service.dart';
+import '../themes/theme_provider.dart';
 
 class SettingsPage extends StatelessWidget {
   static const String id = "settingsid";

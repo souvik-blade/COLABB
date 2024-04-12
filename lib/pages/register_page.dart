@@ -1,6 +1,6 @@
-import 'package:colabb/services/auth/auth_service.dart';
-import 'package:colabb/components/my_button.dart';
-import 'package:colabb/components/my_textfield.dart';
+import '../services/auth/auth_service.dart';
+import '../components/my_button.dart';
+import '../components/my_textfield.dart';
 import 'package:flutter/material.dart';
 
 class RegisterPage extends StatelessWidget {

@@ -1,13 +1,23 @@
-import 'package:colabb/components/schedule_tile.dart';
+import 'schedule_days/friday.dart';
+import 'schedule_days/monday.dart';
+import 'schedule_days/thurdsay.dart';
+import 'schedule_days/tuesday.dart';
+import 'schedule_days/wednesday.dart';
+import 'package:contained_tab_bar_view/contained_tab_bar_view.dart';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
-class SchedulePage extends StatelessWidget {
-  static const String id = "scheduleid";
+class SchedulePage extends StatefulWidget {
   const SchedulePage({super.key});
+  static const String id = "scheduleid";
 
   @override
+  State<SchedulePage> createState() => _SchedulePageState();
+}
+
+class _SchedulePageState extends State<SchedulePage> {
+  @override
   Widget build(BuildContext context) {
+    int todaysIndex = DateTime.now().weekday.toInt();
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 100,
@@ -16,33 +26,29 @@ class SchedulePage extends StatelessWidget {
           style: TextStyle(fontSize: 50, fontWeight: FontWeight.w200),
         ),
       ),
-      body: SafeArea(
-        child: StreamBuilder<QuerySnapshot>(
-          stream: FirebaseFirestore.instance
-              .collection('schedule')
-              .orderBy("time", descending: true)
-              .snapshots(),
-          builder:
-              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-            if (snapshot.hasError) {
-              return Text('Error: ${snapshot.error}');
-            }
-
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator());
-            }
-
-            return ListView.builder(
-              itemCount: snapshot.data!.docs.length,
-              itemBuilder: (BuildContext context, int index) {
-                DocumentSnapshot document = snapshot.data!.docs[index];
-                return ScheduleTile(
-                  time: document['time'],
-                  subject: document['subject'],
-                );
-              },
-            );
-          },
+      body: Container(
+        padding: const EdgeInsets.all(8.0),
+        // color: Colors.blue,
+        width: double.maxFinite,
+        // height: 600,
+        child: ContainedTabBarView(
+          tabBarViewProperties:
+              const TabBarViewProperties(physics: BouncingScrollPhysics()),
+          // initialIndex: todaysIndex,
+          tabs: const [
+            Text('Monday', style: TextStyle(fontSize: 16)),
+            Text('Tuesday', style: TextStyle(fontSize: 16)),
+            Text('Wednesday', style: TextStyle(fontSize: 16)),
+            Text('Thursday', style: TextStyle(fontSize: 16)),
+            Text('Friday', style: TextStyle(fontSize: 16)),
+          ],
+          views: const [
+            Monday(),
+            Tuesday(),
+            Wednesday(),
+            Thursday(),
+            Friday(),
+          ],
         ),
       ),
     );

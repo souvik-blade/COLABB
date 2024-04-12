@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:colabb/admin_pages/admin_homepage.dart';
-import 'package:colabb/services/auth/login_or_register.dart';
-import 'package:colabb/pages/home_page.dart';
+import '../../admin_pages/admin_homepage.dart';
+import 'login_or_register.dart';
+import '../../pages/home_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
