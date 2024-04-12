@@ -1,21 +1,18 @@
-import 'package:colabb/pages/mentor_grouppage.dart';
+import 'mentor_grouppage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:colabb/pages/assignments_page.dart';
-import 'package:colabb/pages/chat_page.dart';
-import 'package:colabb/pages/schedule_page.dart';
-import 'package:colabb/pages/settings_page.dart';
-import 'package:colabb/services/auth/auth_service.dart';
-import 'package:colabb/services/chat/chat_service.dart';
-import 'package:provider/provider.dart';
-
+import 'assignments_page.dart';
+import 'chat_page.dart';
+import 'schedule_page.dart';
+import 'settings_page.dart';
+import '../services/auth/auth_service.dart';
+import '../services/chat/chat_service.dart';
 import '../components/user_tile.dart';
-import '../themes/theme_provider.dart';
 
 class HomePage extends StatefulWidget {
   static const String id = "homepageid";
 
-  HomePage({super.key});
+  const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();

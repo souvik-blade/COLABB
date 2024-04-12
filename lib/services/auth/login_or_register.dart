@@ -1,5 +1,5 @@
-import 'package:colabb/pages/login_page.dart';
-import 'package:colabb/pages/register_page.dart';
+import '../../pages/login_page.dart';
+import '../../pages/register_page.dart';
 import 'package:flutter/material.dart';
 
 class LoginOrRegister extends StatefulWidget {

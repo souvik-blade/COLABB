@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
 class ScheduleTile extends StatelessWidget {
-  final String time;
+  final String from;
+  final String to;
   final String subject;
-  ScheduleTile({required this.time, required this.subject});
+  const ScheduleTile(
+      {required this.subject, required this.from, required this.to});
 
   @override
   Widget build(BuildContext context) {
@@ -12,20 +14,27 @@ class ScheduleTile extends StatelessWidget {
         color: Theme.of(context).colorScheme.secondary,
         borderRadius: BorderRadius.circular(12),
       ),
-      margin: EdgeInsets.symmetric(vertical: 5, horizontal: 25),
-      padding: EdgeInsets.all(20),
-      child: Row(
+      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 24),
+      padding: const EdgeInsets.all(20),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            time,
-            style: TextStyle(fontSize: 24),
-          ),
-          SizedBox(
-            width: 20,
+          Row(
+            children: [
+              Text(from,
+                  style: const TextStyle(
+                      fontSize: 20, fontWeight: FontWeight.w400)),
+              const Text(" - "),
+              Text(to,
+                  style: const TextStyle(
+                      fontSize: 20, fontWeight: FontWeight.w400)),
+              const SizedBox(width: 20),
+            ],
           ),
           Text(
             subject,
-            style: TextStyle(fontSize: 24),
+            style: const TextStyle(fontSize: 28, fontWeight: FontWeight.w200),
           ),
         ],
       ),

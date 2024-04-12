@@ -1,7 +1,4 @@
-import 'package:colabb/admin_pages/admin_assignmentpage.dart';
-import 'package:colabb/admin_pages/admin_schedulepage.dart';
-import 'package:colabb/admin_pages/admin_settings.dart';
-import 'package:colabb/admin_pages/admin_statspage.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -35,6 +32,10 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
             backgroundColor: Colors.transparent,
             actions: [
               IconButton(
+
+                icon: Icon(Icons.logout_rounded),
+                onPressed: _logout,
+
                 icon: const Icon(
                   CupertinoIcons.gear,
                   size: 30,
@@ -47,6 +48,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                     ),
                   );
                 },
+
               ),
             ],
             centerTitle: true,
@@ -79,7 +81,6 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                 ),
               ),
             )),
-
         body: TabBarView(
           children: [
             const AdminAssignmentPage(),
@@ -87,39 +88,6 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
             const AdminStatsPage()
           ],
         ),
-
-        // body: Center(
-        //   child: Column(
-        //     mainAxisAlignment: MainAxisAlignment.center,
-        //     children: [
-        //       Text(
-        //         'Welcome to the Admin Dashboard',
-        //         style: TextStyle(fontSize: 20.0),
-        //       ),
-        //       SizedBox(height: 20.0),
-        //       ElevatedButton(
-        //         onPressed: () {
-        //           // Implement functionality to fetch and display data from Firestore
-        //         },
-        //         child: Text('Fetch Data'),
-        //       ),
-        //       // Placeholder for displaying data from Firestore
-        //       // Replace this with your actual data display widgets
-        //       Container(
-        //         margin: EdgeInsets.symmetric(vertical: 20.0),
-        //         padding: EdgeInsets.all(10.0),
-        //         decoration: BoxDecoration(
-        //           border: Border.all(color: Colors.grey),
-        //           borderRadius: BorderRadius.circular(10.0),
-        //         ),
-        //         child: Text(
-        //           'Data from Firestore will be displayed here',
-        //           style: TextStyle(fontSize: 16.0),
-        //         ),
-        //       ),
-        //     ],
-        //   ),
-        // ),
       ),
     );
   }

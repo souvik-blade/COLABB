@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:colabb/components/chat_bubble.dart';
-import 'package:colabb/components/my_textfield.dart';
-import 'package:colabb/services/auth/auth_service.dart';
-import 'package:colabb/services/chat/chat_service.dart';
+import '../components/chat_bubble.dart';
+import '../components/my_textfield.dart';
+import '../services/auth/auth_service.dart';
+import '../services/chat/chat_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 

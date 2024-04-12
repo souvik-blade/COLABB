@@ -1,7 +1,7 @@
-import 'package:colabb/pages/assignments_page.dart';
-import 'package:colabb/pages/home_page.dart';
-import 'package:colabb/pages/mentor_grouppage.dart';
-import 'package:colabb/pages/schedule_page.dart';
+import '../pages/assignments_page.dart';
+import '../pages/home_page.dart';
+import '../pages/mentor_grouppage.dart';
+import '../pages/schedule_page.dart';
 import 'package:flutter/material.dart';
 
 class BottomNavBar extends StatefulWidget {

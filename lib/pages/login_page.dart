@@ -1,7 +1,7 @@
-import 'package:colabb/admin_pages/admin_loginpage.dart';
-import 'package:colabb/services/auth/auth_service.dart';
-import 'package:colabb/components/my_button.dart';
-import 'package:colabb/components/my_textfield.dart';
+import '../admin_pages/admin_loginpage.dart';
+import '../services/auth/auth_service.dart';
+import '../components/my_button.dart';
+import '../components/my_textfield.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatelessWidget {
