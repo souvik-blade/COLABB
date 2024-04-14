@@ -17,7 +17,7 @@ class SchedulePage extends StatefulWidget {
 class _SchedulePageState extends State<SchedulePage> {
   @override
   Widget build(BuildContext context) {
-    int todaysIndex = DateTime.now().weekday.toInt();
+    // int todaysIndex = DateTime.now().weekday.toInt();
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 100,
@@ -42,7 +42,7 @@ class _SchedulePageState extends State<SchedulePage> {
             Text('Thursday', style: TextStyle(fontSize: 16)),
             Text('Friday', style: TextStyle(fontSize: 16)),
           ],
-          views: [
+          views: const [
             Monday(),
             Tuesday(),
             Wednesday(),

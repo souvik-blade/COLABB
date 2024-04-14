@@ -6,6 +6,7 @@ class ChatBubble extends StatelessWidget {
   final String message;
   final bool isCurrentUser;
   const ChatBubble({
+    super.key,
     required this.message,
     required this.isCurrentUser,
   });
@@ -17,13 +18,20 @@ class ChatBubble extends StatelessWidget {
         Provider.of<ThemeProvider>(context, listen: false).isDarkMode;
     return Container(
       decoration: BoxDecoration(
-        color: isCurrentUser
-            ? (isDarkMode ? Colors.green.shade600 : Colors.grey.shade500)
-            : (isDarkMode ? Colors.grey.shade800 : Colors.grey.shade200),
-        borderRadius: BorderRadius.circular(12),
-      ),
-      padding: EdgeInsets.all(16),
-      margin: EdgeInsets.symmetric(vertical: 2.5, horizontal: 25),
+          color: isCurrentUser
+              ? (isDarkMode ? Colors.green.shade600 : Colors.grey.shade500)
+              : (isDarkMode ? Colors.grey.shade800 : Colors.grey.shade200),
+          borderRadius: isCurrentUser
+              ? const BorderRadius.only(
+                  topRight: Radius.circular(12),
+                  topLeft: Radius.circular(12),
+                  bottomLeft: Radius.circular(12))
+              : const BorderRadius.only(
+                  topRight: Radius.circular(12),
+                  topLeft: Radius.circular(12),
+                  bottomRight: Radius.circular(12))),
+      padding: const EdgeInsets.all(16),
+      margin: const EdgeInsets.symmetric(vertical: 2.5, horizontal: 25),
       child: Text(
         message,
         style: TextStyle(

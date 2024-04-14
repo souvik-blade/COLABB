@@ -20,10 +20,9 @@ class AssignmentPage extends StatelessWidget {
         child: StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore.instance
               .collection('assignment')
-              .orderBy("lastDate", descending: false)
+              .orderBy("uploadDateTime", descending: true)
               .snapshots(),
-          builder:
-              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (snapshot.hasError) {
               return Text('Error: ${snapshot.error}');
             }
@@ -36,12 +35,13 @@ class AssignmentPage extends StatelessWidget {
               itemCount: snapshot.data!.docs.length,
               itemBuilder: (BuildContext context, int index) {
                 DocumentSnapshot document = snapshot.data!.docs[index];
-                print(index.toString());
+
                 return AssignmentTile(
                   aboutAssignment: document['Instructions'],
                   assignedDate: document['assignedOn'],
                   dueDate: document['lastDate'],
                   facultyName: document['facultyName'],
+                  pdfUrl: document['pdfUrl'],
                 );
               },
             );

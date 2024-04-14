@@ -4,7 +4,6 @@ import 'package:colabb/admin_pages/admin_settings.dart';
 import 'package:colabb/admin_pages/admin_statspage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 import '../components/tab_item.dart';
 
@@ -71,9 +70,9 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                     labelColor: Colors.white,
                     unselectedLabelColor: Colors.black54,
                     tabs: [
-                      TabItem(title: 'Assignment', count: 1),
-                      TabItem(title: 'Schedule', count: 3),
-                      TabItem(title: 'App Stats', count: 1),
+                      TabItem(title: 'Assignment'),
+                      TabItem(title: 'Schedule'),
+                      TabItem(title: 'App Stats'),
                     ],
                   ),
                 ),
