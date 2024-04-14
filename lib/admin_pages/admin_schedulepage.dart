@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+import 'package:colabb/components/upload_button.dart';
+import 'package:colabb/themes/theme_provider.dart';
+=======
+>>>>>>> 7cb0323a266a97c85f6da3e7339d33094231957e
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -6,8 +11,7 @@ class AdminScheduleUploadScreen extends StatefulWidget {
   const AdminScheduleUploadScreen({super.key});
 
   @override
-  State<AdminScheduleUploadScreen> createState() =>
-      _AdminScheduleUploadScreenState();
+  State<AdminScheduleUploadScreen> createState() => _AdminScheduleUploadScreenState();
 }
 
 class _AdminScheduleUploadScreenState extends State<AdminScheduleUploadScreen> {
@@ -61,13 +65,7 @@ class _AdminScheduleUploadScreenState extends State<AdminScheduleUploadScreen> {
   }
 
 //week picker
-  final List<String> weekdays = [
-    'monday',
-    'tuesday',
-    'wednesday',
-    'thursday',
-    'friday'
-  ];
+  final List<String> weekdays = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'];
 
   String? selectedValue;
   @override
@@ -88,22 +86,21 @@ class _AdminScheduleUploadScreenState extends State<AdminScheduleUploadScreen> {
               ),
               //from text field
               TextField(
-                // readOnly: true,
+                readOnly: true,
                 controller: _fromTimeController,
                 decoration: InputDecoration(
                     enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                          color: Theme.of(context).colorScheme.tertiary),
+                      borderSide:
+                          BorderSide(color: Theme.of(context).colorScheme.tertiary),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                          color: Theme.of(context).colorScheme.primary),
+                      borderSide:
+                          BorderSide(color: Theme.of(context).colorScheme.primary),
                     ),
                     fillColor: Theme.of(context).colorScheme.secondary,
                     filled: true,
                     hintText: "HH:MM",
-                    hintStyle: TextStyle(
-                        color: Theme.of(context).colorScheme.primary)),
+                    hintStyle: TextStyle(color: Theme.of(context).colorScheme.primary)),
                 onTap: () async {
                   final TimeOfDay? picked = await showTimePicker(
                     context: context,
@@ -117,8 +114,7 @@ class _AdminScheduleUploadScreenState extends State<AdminScheduleUploadScreen> {
                     String formattedMinute = _selectedTime.minute < 10
                         ? '0${_selectedTime.minute}'
                         : '${_selectedTime.minute}';
-                    _fromTimeController.text =
-                        "$formattedHour:$formattedMinute";
+                    _fromTimeController.text = "$formattedHour:$formattedMinute";
                   }
                 },
               ),
@@ -135,21 +131,20 @@ class _AdminScheduleUploadScreenState extends State<AdminScheduleUploadScreen> {
               ),
               // to text field
               TextField(
-                // readOnly: true,
+                readOnly: true,
                 controller: _toTimeController,
                 decoration: InputDecoration(
                     enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                            color: Theme.of(context).colorScheme.tertiary)),
+                        borderSide:
+                            BorderSide(color: Theme.of(context).colorScheme.tertiary)),
                     focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                          color: Theme.of(context).colorScheme.primary),
+                      borderSide:
+                          BorderSide(color: Theme.of(context).colorScheme.primary),
                     ),
                     fillColor: Theme.of(context).colorScheme.secondary,
                     filled: true,
                     hintText: "HH:MM",
-                    hintStyle: TextStyle(
-                        color: Theme.of(context).colorScheme.primary)),
+                    hintStyle: TextStyle(color: Theme.of(context).colorScheme.primary)),
                 onTap: () async {
                   final TimeOfDay? picked = await showTimePicker(
                     context: context,
@@ -164,8 +159,7 @@ class _AdminScheduleUploadScreenState extends State<AdminScheduleUploadScreen> {
                       String formattedMinute = _selectedTime.minute < 10
                           ? '0${_selectedTime.minute}'
                           : '${_selectedTime.minute}';
-                      _toTimeController.text =
-                          "$formattedHour:$formattedMinute";
+                      _toTimeController.text = "$formattedHour:$formattedMinute";
                     });
                   }
                 },
@@ -186,16 +180,15 @@ class _AdminScheduleUploadScreenState extends State<AdminScheduleUploadScreen> {
                 isExpanded: true,
                 decoration: InputDecoration(
                   enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                          color: Theme.of(context).colorScheme.tertiary)),
+                      borderSide:
+                          BorderSide(color: Theme.of(context).colorScheme.tertiary)),
                   focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                          color: Theme.of(context).colorScheme.primary)),
+                      borderSide:
+                          BorderSide(color: Theme.of(context).colorScheme.primary)),
                   fillColor: Theme.of(context).colorScheme.secondary,
                   filled: true,
                   hintText: "Enter Name",
-                  hintStyle:
-                      TextStyle(color: Theme.of(context).colorScheme.primary),
+                  hintStyle: TextStyle(color: Theme.of(context).colorScheme.primary),
                 ),
                 hint: const Text(
                   'Select Day',
@@ -254,23 +247,23 @@ class _AdminScheduleUploadScreenState extends State<AdminScheduleUploadScreen> {
                 controller: _subjectController,
                 decoration: InputDecoration(
                     enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                          color: Theme.of(context).colorScheme.tertiary),
+                      borderSide:
+                          BorderSide(color: Theme.of(context).colorScheme.tertiary),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                          color: Theme.of(context).colorScheme.primary),
+                      borderSide:
+                          BorderSide(color: Theme.of(context).colorScheme.primary),
                     ),
                     fillColor: Theme.of(context).colorScheme.secondary,
                     filled: true,
                     hintText: "Enter the subject",
-                    hintStyle: TextStyle(
-                        color: Theme.of(context).colorScheme.primary)),
+                    hintStyle: TextStyle(color: Theme.of(context).colorScheme.primary)),
               ),
               const SizedBox(height: 20.0),
-              ElevatedButton(
-                onPressed: () =>
-                    _uploadSchedule(context, _weekdayController.text),
+
+              UploadButton(
+                text: 'Upload Schedule',
+                onTap: () => _uploadSchedule(context, _weekdayController.text),
                 // onPressed: () {
                 //   print(_toTimeController.text);
                 //   print(_fromTimeController.text);
@@ -278,7 +271,6 @@ class _AdminScheduleUploadScreenState extends State<AdminScheduleUploadScreen> {
                 //   print(_subjectController.text);
 
                 // },
-                child: const Text('Upload Schedule'),
               ),
             ],
           ),

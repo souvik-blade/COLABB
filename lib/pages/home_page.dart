@@ -1,3 +1,6 @@
+import 'package:colabb/themes/theme_provider.dart';
+import 'package:provider/provider.dart';
+
 import 'mentor_grouppage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +11,7 @@ import 'settings_page.dart';
 import '../services/auth/auth_service.dart';
 import '../services/chat/chat_service.dart';
 import '../components/user_tile.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
 
 class HomePage extends StatefulWidget {
   static const String id = "homepageid";
@@ -31,22 +35,19 @@ class _HomePageState extends State<HomePage> {
     const BottomNavigationBarItem(
       icon: Icon(Icons.dashboard_outlined,
           color: Color.fromARGB(255, 105, 98, 98), size: 30),
-      activeIcon:
-          Icon(Icons.dashboard_rounded, size: 30, color: Colors.blueAccent),
+      activeIcon: Icon(Icons.dashboard_rounded, size: 30, color: Colors.blueAccent),
       label: "Home",
     ),
     const BottomNavigationBarItem(
-      icon: Icon(CupertinoIcons.time,
-          color: Color.fromARGB(255, 105, 98, 98), size: 30),
-      activeIcon:
-          Icon(CupertinoIcons.time_solid, size: 30, color: Colors.blueAccent),
+      icon: Icon(CupertinoIcons.time, color: Color.fromARGB(255, 105, 98, 98), size: 30),
+      activeIcon: Icon(CupertinoIcons.time_solid, size: 30, color: Colors.blueAccent),
       label: "Home",
     ),
     const BottomNavigationBarItem(
       icon: Icon(CupertinoIcons.list_bullet_below_rectangle,
           color: Color.fromARGB(255, 105, 98, 98), size: 30),
-      activeIcon: Icon(CupertinoIcons.list_bullet_indent,
-          size: 30, color: Colors.blueAccent),
+      activeIcon:
+          Icon(CupertinoIcons.list_bullet_indent, size: 30, color: Colors.blueAccent),
       label: "Home",
     ),
     const BottomNavigationBarItem(
@@ -59,18 +60,69 @@ class _HomePageState extends State<HomePage> {
   ];
   @override
   Widget build(BuildContext context) {
+    bool isDarkMode = Provider.of<ThemeProvider>(context, listen: false).isDarkMode;
     return Scaffold(
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.blue,
-        currentIndex: _currentIndex,
-        items: _bottomNavigationBarItems,
-        onTap: (index) {
+      bottomNavigationBar: GNav(
+        backgroundColor: isDarkMode
+            ? ThemeData.dark().copyWith().canvasColor
+            : ThemeData.light().copyWith().canvasColor,
+        gap: 8,
+        iconSize: 28,
+        activeColor: Colors.teal,
+        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+        tabMargin: EdgeInsets.all(10),
+        duration: Duration(milliseconds: 500),
+        tabBorderRadius: 12,
+        textStyle: TextStyle(fontWeight: FontWeight.w300),
+        tabBackgroundColor: isDarkMode
+            ? ThemeData.dark().copyWith().highlightColor
+            : ThemeData.light().copyWith().highlightColor,
+
+        tabs: const [
+          GButton(
+            duration: Duration(seconds: 5),
+
+            icon: Icons.dashboard_rounded,
+
+            iconActiveColor: Colors.teal,
+            text: 'Home',
+            // style: GnavStyle.oldSchool,
+          ),
+          GButton(
+            icon: CupertinoIcons.list_bullet_below_rectangle,
+            text: 'Assignments',
+          ),
+          GButton(
+            icon: CupertinoIcons.clock_fill,
+            text: 'Schedule',
+          ),
+          GButton(
+            icon: CupertinoIcons.person_crop_square_fill,
+            text: 'Mentor',
+          )
+        ],
+        selectedIndex: _currentIndex,
+        onTabChange: (index) {
           setState(() {
             _pageController.animateToPage(index,
-                duration: const Duration(milliseconds: 200),
-                curve: Curves.easeIn);
+                duration: const Duration(milliseconds: 200), curve: Curves.easeIn);
           });
         },
+        // BottomNavigationBar(
+        //   showSelectedLabels: false,
+        //   showUnselectedLabels: false,
+
+        //   // backgroundColor: Colors.blue,
+        //   currentIndex: _currentIndex,
+        //   items: _bottomNavigationBarItems,
+        //   onTap: (index) {
+        //     setState(() {
+        //       _pageController.animateToPage(index,
+        //           duration: const Duration(milliseconds: 200),
+        //           curve: Curves.easeIn);
+        //     });
+        //   },
+        // ),
       ),
       body: PageView(
           controller: _pageController,
@@ -98,21 +150,22 @@ class _HomePageState extends State<HomePage> {
           style: TextStyle(fontSize: 50, fontWeight: FontWeight.w200),
         ),
         backgroundColor: Colors.transparent,
-        // foregroundColor: Colors.grey,
-        //actions: [Text(_authService.getCurrentUser()!.email!)],
         actions: [
-          IconButton(
-              icon: const Icon(CupertinoIcons.gear),
-              iconSize: 30,
-              onPressed: () {
-                // navigate to settings page
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const SettingsPage(),
-                  ),
-                );
-              })
+          Padding(
+            padding: const EdgeInsets.only(right: 24.0),
+            child: IconButton(
+                icon: const Icon(CupertinoIcons.gear),
+                iconSize: 30,
+                onPressed: () {
+                  // navigate to settings page
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SettingsPage(),
+                    ),
+                  );
+                }),
+          )
         ],
       ),
       body: StreamBuilder(
@@ -125,14 +178,13 @@ class _HomePageState extends State<HomePage> {
 
           //loading
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Text("Loading");
+            return Center(child: CircularProgressIndicator());
           }
 
           //return list view
           return ListView(
             children: snapshot.data!
-                .map<Widget>(
-                    (userData) => _buildUserListItem(userData, context))
+                .map<Widget>((userData) => _buildUserListItem(userData, context))
                 .toList(),
           );
         }),
@@ -141,8 +193,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   //build individual list tile for user
-  Widget _buildUserListItem(
-      Map<String, dynamic> userData, BuildContext context) {
+  Widget _buildUserListItem(Map<String, dynamic> userData, BuildContext context) {
     // display all users except current user
     if (userData["email"] != _authService.getCurrentUser()?.email) {
       return UserTile(

@@ -1,3 +1,4 @@
+import 'package:colabb/pages/pdf_view.dart';
 import 'package:flutter/material.dart';
 
 class AssignmentTile extends StatelessWidget {
@@ -5,12 +6,15 @@ class AssignmentTile extends StatelessWidget {
   final String dueDate;
   final String aboutAssignment;
   final String facultyName;
-  const AssignmentTile(
-      {super.key,
-      required this.assignedDate,
-      required this.dueDate,
-      required this.aboutAssignment,
-      required this.facultyName});
+  final String pdfUrl;
+  const AssignmentTile({
+    super.key,
+    required this.assignedDate,
+    required this.dueDate,
+    required this.aboutAssignment,
+    required this.facultyName,
+    required this.pdfUrl,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +27,7 @@ class AssignmentTile extends StatelessWidget {
       padding: const EdgeInsets.all(20),
       child: ExpansionTile(
         // trailing: Icon(Icons.picture_as_pdf),
-        subtitle: Text('Last Date: ' + dueDate),
+        subtitle: Text('Last Date: $dueDate'),
         // backgroundColor: Colors.transparent,
         // backgroundColor: Colors.red,
         shape: const RoundedRectangleBorder(
@@ -60,14 +64,29 @@ class AssignmentTile extends StatelessWidget {
                 height: 10,
               ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                // mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Text(
-                    "Assigned on: $assignedDate",
+                    assignedDate,
                     style: const TextStyle(fontSize: 16),
                   ),
-                  const Icon(Icons.picture_as_pdf_rounded)
+                  Spacer(),
+                  IconButton(
+                    icon: Icon(Icons.picture_as_pdf_rounded),
+                    onPressed: pdfUrl != null && pdfUrl.isNotEmpty
+                        ? () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => PdfView(pdfUrl: pdfUrl),
+                              ),
+                            );
+                          }
+                        : null, // Disable button if pdfUrl is null or empty
+                  )
                 ],
+              ),
+              SizedBox(
+                height: 10,
               ),
               Text(aboutAssignment),
             ],
