@@ -1,42 +1,85 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../components/upload_button.dart';
+
+import 'package:file_picker/file_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:vph_web_date_picker/vph_web_date_picker.dart';
 import 'package:intl/intl.dart';
 
 class AdminAssignmentPage extends StatefulWidget {
-  const AdminAssignmentPage({super.key});
+  const AdminAssignmentPage({Key? key}) : super(key: key);
 
   @override
   State<AdminAssignmentPage> createState() => _AdminAssignmentPageState();
 }
 
 class _AdminAssignmentPageState extends State<AdminAssignmentPage> {
+  late String selectedTitle = 'Mr.';
+  late String _fileNameToShow = '';
+  late File _fileDetail = File('');
+  bool _uploading = false;
   final TextEditingController _assignedDateController = TextEditingController();
   final TextEditingController _dueDateController = TextEditingController();
   final TextEditingController _facultyName = TextEditingController();
-
   final TextEditingController _instructionController = TextEditingController();
+  late DateTime _selectedDate;
 
-  Future<void> _uploadAssignnemt(BuildContext context) async {
+  // Pick PDF
+  Future<void> pickFile() async {
+    final pickedFile = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['pdf'],
+    );
+
+    if (pickedFile != null) {
+      String fileName = pickedFile.files.single.name;
+      setState(() {
+        _fileNameToShow = fileName;
+        _fileDetail = File(pickedFile.files.single.path!);
+      });
+    }
+  }
+
+  Future<void> _uploadAssignment(
+      BuildContext context, String filename, File? file) async {
     String assDate = _assignedDateController.text;
     String dueDate = _dueDateController.text;
     String facultyName = _facultyName.text;
     String instructions = _instructionController.text;
 
+    // Check if a PDF file is selected
     if (assDate.isNotEmpty &&
         dueDate.isNotEmpty &&
         facultyName.isNotEmpty &&
         instructions.isNotEmpty) {
+      final reference = FirebaseStorage.instance.ref().child('pdfs/$filename.pdf');
+      final uploadTask = reference.putFile(file!);
+      await uploadTask.whenComplete(() {
+        print('Uploaded');
+      });
+      final downloadLink = await reference.getDownloadURL();
+      final DateTime uploadDateTime = DateTime.now();
+
+      // Upload assignment details to Firestore
       await FirebaseFirestore.instance.collection('assignment').add({
         'assignedOn': assDate,
         'lastDate': dueDate,
         'facultyName': facultyName,
         'Instructions': instructions,
+        'pdfUrl': downloadLink,
+        'pdfName': _fileNameToShow,
+        'uploadDateTime': uploadDateTime,
+      });
+
+      setState(() {
+        _uploading = false;
       });
 
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Assignment uploaded successfully')),
+        const SnackBar(
+          content: Text('Assignment uploaded successfully'),
+        ),
       );
 
       _assignedDateController.clear();
@@ -44,24 +87,15 @@ class _AdminAssignmentPageState extends State<AdminAssignmentPage> {
       _dueDateController.clear();
       _facultyName.clear();
     } else {
-      // Show error message if any field is empty
+      // Upload assignment details to Firestore without PDF file
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please fill all fields')),
+        const SnackBar(
+          content: Text('Please fill up all the details'),
+        ),
       );
     }
   }
 
-  late TextEditingController _controller;
-  late DateTime _selectedDate;
-  @override
-  void initState() {
-    super.initState();
-    _selectedDate = DateTime.now();
-    _controller =
-        TextEditingController(text: _selectedDate.toString().split(' ')[0]);
-  }
-
-  late String selectedTitle = 'Mr.';
   @override
   Widget build(BuildContext context) {
     final assignedKey = GlobalKey();
@@ -85,96 +119,79 @@ class _AdminAssignmentPageState extends State<AdminAssignmentPage> {
                 key: assignedKey,
                 controller: _assignedDateController,
                 decoration: InputDecoration(
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                          color: Theme.of(context).colorScheme.tertiary),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                          color: Theme.of(context).colorScheme.primary),
-                    ),
-                    fillColor: Theme.of(context).colorScheme.secondary,
-                    filled: true,
-                    hintText: "DD/MM/YYYY",
-                    hintStyle: TextStyle(
-                        color: Theme.of(context).colorScheme.primary)),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Theme.of(context).colorScheme.tertiary),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
+                  ),
+                  fillColor: Theme.of(context).colorScheme.secondary,
+                  filled: true,
+                  hintText: "DD/MM/YYYY",
+                  hintStyle: TextStyle(color: Theme.of(context).colorScheme.primary),
+                ),
                 onTap: () async {
-                  final pickedDate = await showWebDatePicker(
-                    context: assignedKey.currentContext!,
-                    initialDate: _selectedDate,
-                    firstDate: DateTime.now().subtract(const Duration(days: 7)),
-                    lastDate: DateTime.now().add(const Duration(days: 14000)),
-                    width: 300,
-                    withoutActionButtons: false,
-                    weekendDaysColor: Colors.red,
-                  );
+                  final pickedDate = await showDatePicker(
+                      context: context,
+                      initialDate: DateTime.now(), //get today's date
+                      firstDate: DateTime(
+                          2000), //DateTime.now() - not to allow to choose before today.
+                      lastDate: DateTime(2101)
+                      // withoutActionButtons: false,
+                      // weekendDaysColor: Colors.red,
+                      );
                   if (pickedDate != null) {
                     _selectedDate = pickedDate;
                     _assignedDateController.text =
-                        DateFormat('d\'th\' MMMM y').format(pickedDate);
+                        DateFormat('d MMMM y').format(pickedDate);
                   }
                 },
               ),
-              const SizedBox(
-                height: 30,
-              ),
+
+              const SizedBox(height: 30),
               const Text(
                 "Last Date",
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.w200),
               ),
-              const SizedBox(
-                height: 10,
-              ),
+              const SizedBox(height: 10),
               TextField(
+                readOnly: true,
                 key: deadlineKey,
                 controller: _dueDateController,
                 decoration: InputDecoration(
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                          color: Theme.of(context).colorScheme.tertiary),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                          color: Theme.of(context).colorScheme.primary),
-                    ),
-                    fillColor: Theme.of(context).colorScheme.secondary,
-                    filled: true,
-                    hintText: "DD/MM/YYYY",
-                    hintStyle: TextStyle(
-                        color: Theme.of(context).colorScheme.primary)),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Theme.of(context).colorScheme.tertiary),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
+                  ),
+                  fillColor: Theme.of(context).colorScheme.secondary,
+                  filled: true,
+                  hintText: "DD/MM/YYYY",
+                  hintStyle: TextStyle(color: Theme.of(context).colorScheme.primary),
+                ),
                 onTap: () async {
-                  final pickedDate = await showWebDatePicker(
-                    context: deadlineKey.currentContext!,
-                    initialDate: _selectedDate,
-                    firstDate: DateTime.now().subtract(const Duration(days: 7)),
-                    lastDate: DateTime.now().add(const Duration(days: 14000)),
-                    width: 300,
-                    withoutActionButtons: false,
-                    weekendDaysColor: Colors.red,
-                  );
+                  final pickedDate = await showDatePicker(
+                      context: context,
+                      initialDate: DateTime.now(), //get today's date
+                      firstDate: DateTime(
+                          2000), //DateTime.now() - not to allow to choose before today.
+                      lastDate: DateTime(2101));
                   if (pickedDate != null) {
                     _selectedDate = pickedDate;
-                    _dueDateController.text =
-                        DateFormat('d\'th\' MMMM y').format(pickedDate);
+                    _dueDateController.text = DateFormat('d MMMM y').format(pickedDate);
                   }
                 },
               ),
-              const SizedBox(
-                height: 30,
-              ),
+              const SizedBox(height: 30),
               const Text(
                 "Faculty name",
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.w200),
               ),
-              const SizedBox(
-                height: 10,
-              ),
+              const SizedBox(height: 10),
               //faculty details
-
               Container(
-                // color: Colors.red,
                 width: double.maxFinite,
-                // height: 100,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -183,19 +200,19 @@ class _AdminAssignmentPageState extends State<AdminAssignmentPage> {
                       child: DropdownButtonFormField<String>(
                         value: selectedTitle,
                         decoration: InputDecoration(
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color:
-                                      Theme.of(context).colorScheme.tertiary),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Theme.of(context).colorScheme.primary),
-                            ),
-                            fillColor: Theme.of(context).colorScheme.secondary,
-                            filled: true,
-                            hintStyle: TextStyle(
-                                color: Theme.of(context).colorScheme.primary)),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: Theme.of(context).colorScheme.tertiary),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: Theme.of(context).colorScheme.primary),
+                          ),
+                          fillColor: Theme.of(context).colorScheme.secondary,
+                          filled: true,
+                          hintStyle:
+                              TextStyle(color: Theme.of(context).colorScheme.primary),
+                        ),
                         hint: const Text('Title'),
                         onChanged: (value) {
                           setState(() {
@@ -218,77 +235,111 @@ class _AdminAssignmentPageState extends State<AdminAssignmentPage> {
                       child: TextField(
                         controller: _facultyName,
                         decoration: InputDecoration(
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color:
-                                      Theme.of(context).colorScheme.tertiary),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Theme.of(context).colorScheme.primary),
-                            ),
-                            fillColor: Theme.of(context).colorScheme.secondary,
-                            filled: true,
-                            hintText: "Enter Name",
-                            hintStyle: TextStyle(
-                                color: Theme.of(context).colorScheme.primary)),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: Theme.of(context).colorScheme.tertiary),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: Theme.of(context).colorScheme.primary),
+                          ),
+                          fillColor: Theme.of(context).colorScheme.secondary,
+                          filled: true,
+                          hintText: "Enter Name",
+                          hintStyle:
+                              TextStyle(color: Theme.of(context).colorScheme.primary),
+                        ),
                       ),
                     )
                   ],
                 ),
               ),
-
-              const SizedBox(
-                height: 30,
+              const SizedBox(height: 30),
+              Row(
+                children: [
+                  const Text(
+                    "Instructions",
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w200),
+                  ),
+                  SizedBox(width: 10),
+                  Expanded(
+                    child: Text(
+                      _fileNameToShow,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
               ),
-              const Text(
-                "Instructions",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w200),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
+              const SizedBox(height: 10),
               Container(
-                height: 300,
+                // height: 300,
                 child: TextField(
                   maxLines: 8,
                   decoration: InputDecoration(
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                            color: Theme.of(context).colorScheme.tertiary),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                            color: Theme.of(context).colorScheme.primary),
-                      ),
-                      fillColor: Theme.of(context).colorScheme.secondary,
-                      filled: true,
-                      hintText: "Enter the assignment details here....",
-                      hintStyle: TextStyle(
-                          color: Theme.of(context).colorScheme.primary)),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: Theme.of(context).colorScheme.tertiary),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: Theme.of(context).colorScheme.primary),
+                    ),
+                    fillColor: Theme.of(context).colorScheme.secondary,
+                    filled: true,
+                    hintText: "Enter the assignment details here....",
+                    hintStyle: TextStyle(color: Theme.of(context).colorScheme.primary),
+                  ),
                   controller: _instructionController,
                 ),
               ),
-              //const SizedBox(height: 20.0),
+              if (_uploading)
+                LinearProgressIndicator(
+                  color: Color.fromARGB(255, 13, 143, 130),
+                ),
+              const SizedBox(height: 90),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Expanded(
-                    child: UploadButton(
-                        text: "Add PDF",
-                        onTap: () {
-                          print("");
-                        }),
+                    child: MaterialButton(
+                      shape: RoundedRectangleBorder(
+                        borderRadius:
+                            BorderRadius.circular(12.0), // Adjust the value as needed
+                      ),
+                      height: 90,
+                      minWidth: 120,
+                      color: Color.fromARGB(255, 13, 143, 130),
+                      child: const Text("Add PDF"),
+                      onPressed: () async {
+                        await pickFile();
+                      },
+                    ),
+                  ),
+                  SizedBox(
+                    width: 10,
                   ),
                   Expanded(
-                    child: UploadButton(
-                        text: "Upload",
-                        onTap: () {
-                          _uploadAssignnemt(context);
-                        }),
+                    child: MaterialButton(
+                      shape: RoundedRectangleBorder(
+                        borderRadius:
+                            BorderRadius.circular(12.0), // Adjust the value as needed
+                      ),
+                      height: 90,
+                      minWidth: 120,
+                      color: Color.fromARGB(255, 13, 143, 130),
+                      onPressed: () async {
+                        await _uploadAssignment(
+                          context,
+                          _fileNameToShow,
+                          _fileDetail,
+                        );
+                      },
+                      child: const Text("Upload"),
+                    ),
                   ),
                 ],
               ),
+              // Show circular progress indicator while uploading
             ],
           ),
         ),

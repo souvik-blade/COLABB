@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../themes/theme_provider.dart';
 
 class UploadButton extends StatelessWidget {
   final String text;
@@ -7,13 +10,15 @@ class UploadButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isDarkMode =
+        Provider.of<ThemeProvider>(context, listen: false).isDarkMode;
     return GestureDetector(
       onTap: onTap,
       child: Container(
         padding: EdgeInsets.all(25),
         margin: EdgeInsets.symmetric(horizontal: 25),
         decoration: BoxDecoration(
-            color: const Color.fromARGB(255, 9, 104, 96),
+            color: isDarkMode ? Colors.green.shade600 : Colors.grey.shade500,
             borderRadius: BorderRadius.circular(8)),
         child: Center(child: Text(text)),
       ),
