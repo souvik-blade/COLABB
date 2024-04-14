@@ -80,9 +80,9 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
             )),
         body: TabBarView(
           children: [
-            const AdminAssignmentPage(),
+            AdminAssignmentPage(),
             AdminScheduleUploadScreen(),
-            const AdminStatsPage()
+            AdminStatsPage()
           ],
         ),
       ),

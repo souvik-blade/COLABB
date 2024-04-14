@@ -1,7 +1,9 @@
+<<<<<<< HEAD
 import 'package:colabb/components/upload_button.dart';
 import 'package:colabb/themes/theme_provider.dart';
+=======
+>>>>>>> 7cb0323a266a97c85f6da3e7339d33094231957e
 import 'package:dropdown_button2/dropdown_button2.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 

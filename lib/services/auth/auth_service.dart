@@ -20,13 +20,13 @@ class AuthService {
         password: password,
       );
 
-      // save user info if it doesn't already exist
-      _firestore.collection("Users").doc(userCredential.user!.uid).set(
-        {
-          'uid': userCredential.user!.uid,
-          "email": email,
-        },
-      );
+      // // save user info if it doesn't already exist
+      // _firestore.collection("Users").doc(userCredential.user!.uid).set(
+      //   {
+      //     'uid': userCredential.user!.uid,
+      //     "email": email,
+      //   },
+      // );
 
       return userCredential;
     } on FirebaseAuthException catch (e) {
@@ -35,7 +35,8 @@ class AuthService {
   }
 
   //sign up
-  Future<UserCredential> signUpWithEmailPassword(String email, password) async {
+  Future<UserCredential> signUpWithEmailPassword(
+      String email, password, firstName, lastName) async {
     try {
       // create user
       UserCredential userCredential =
@@ -45,10 +46,12 @@ class AuthService {
       );
 
       // save user info in a separate doc
-      _firestore.collection("Users").doc(userCredential.user!.uid).set(
+      await _firestore.collection("Users").doc(userCredential.user?.uid).set(
         {
-          'uid': userCredential.user!.uid,
+          'uid': userCredential.user?.uid,
           "email": email,
+          'first name': firstName,
+          'last name': lastName,
         },
       );
 
@@ -69,7 +72,7 @@ class AuthService {
     password,
   ) async {
     try {
-      // sign user in
+      // sign admin in
       UserCredential userCredential = await _auth.signInWithEmailAndPassword(
         email: email,
         password: password,
@@ -79,6 +82,58 @@ class AuthService {
       throw Exception(e.code);
     }
   }
+
+  // to check if the user is an admin or not
+  Future<bool> isAdmin(User user) async {
+    // Query 'admins' collection to check if user is an admin
+    QuerySnapshot adminSnapshot = await _firestore
+        .collection('admins')
+        .where('uid', isEqualTo: user.uid)
+        .get();
+
+    if (adminSnapshot.docs.isNotEmpty) {
+      // User is an admin
+      return true;
+    } else {
+      // User is not an admin
+
+      // Implement logic to check if user is an admin
+      // For example, query Firestore to check if user is in admin collection
+      // Return true if user is admin, false otherwise
+      return false;
+    }
+  }
+
+// // to check if the user has its name stored in the database
+//   Future<bool> checkUserDetails(User user) async {
+//     final DocumentSnapshot<Map<String, dynamic>> userSnapshot =
+//         await FirebaseFirestore.instance
+//             .collection('Users')
+//             .doc(user.uid)
+//             .get();
+
+//     final userData = userSnapshot.data();
+//     final storedFirstName = userData?['first name'];
+//     final storedLastName = userData?['last name'];
+
+//     if (storedFirstName == null ||
+//         storedFirstName.isEmpty ||
+//         storedLastName == null ||
+//         storedLastName.isEmpty) {
+//       return false;
+//     } else {
+//       return true;
+//     }
+//   }
+
+//   void setUserDetails(User user, String firstName, lastName) async {
+//     await _firestore.collection('Users').doc(user.uid).set(
+//       {
+//         'first name': firstName,
+//         'last name': lastName,
+//       },
+//     );
+//   }
 
   //errors
 }

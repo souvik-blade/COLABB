@@ -35,7 +35,10 @@ class AssignmentPage extends StatelessWidget {
               itemCount: snapshot.data!.docs.length,
               itemBuilder: (BuildContext context, int index) {
                 DocumentSnapshot document = snapshot.data!.docs[index];
+<<<<<<< HEAD
 
+=======
+>>>>>>> 7cb0323a266a97c85f6da3e7339d33094231957e
                 return AssignmentTile(
                   aboutAssignment: document['Instructions'],
                   assignedDate: document['assignedOn'],
