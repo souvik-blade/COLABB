@@ -104,36 +104,5 @@ class AuthService {
     }
   }
 
-// // to check if the user has its name stored in the database
-//   Future<bool> checkUserDetails(User user) async {
-//     final DocumentSnapshot<Map<String, dynamic>> userSnapshot =
-//         await FirebaseFirestore.instance
-//             .collection('Users')
-//             .doc(user.uid)
-//             .get();
-
-//     final userData = userSnapshot.data();
-//     final storedFirstName = userData?['first name'];
-//     final storedLastName = userData?['last name'];
-
-//     if (storedFirstName == null ||
-//         storedFirstName.isEmpty ||
-//         storedLastName == null ||
-//         storedLastName.isEmpty) {
-//       return false;
-//     } else {
-//       return true;
-//     }
-//   }
-
-//   void setUserDetails(User user, String firstName, lastName) async {
-//     await _firestore.collection('Users').doc(user.uid).set(
-//       {
-//         'first name': firstName,
-//         'last name': lastName,
-//       },
-//     );
-//   }
-
   //errors
 }
