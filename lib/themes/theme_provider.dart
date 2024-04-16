@@ -34,7 +34,7 @@ class TextFieldDecoration {
       ),
       fillColor: Colors.grey[200],
       filled: true,
-      hintText: hintText ?? "Enter Text",
+      hintText: hintText,
       hintStyle: const TextStyle(color: Colors.blue),
     );
   }
