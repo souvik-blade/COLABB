@@ -40,14 +40,19 @@ class _SettingsPageState extends State<SettingsPage> {
     if (result != null) {
       File file = File(result.files.single.path!);
 
-      Reference storageReference =
-          FirebaseStorage.instance.ref().child('profile_pictures').child('$result.jpg');
+      Reference storageReference = FirebaseStorage.instance
+          .ref()
+          .child('profile_pictures')
+          .child('$result.jpg');
 
       UploadTask uploadTask = storageReference.putFile(file);
 
       await uploadTask.whenComplete(() async {
         String downloadURL = await storageReference.getDownloadURL();
-        await FirebaseFirestore.instance.collection('Users').doc(userId).update({
+        await FirebaseFirestore.instance
+            .collection('Users')
+            .doc(userId)
+            .update({
           'profilePicture': downloadURL,
         });
 
@@ -70,8 +75,8 @@ class _SettingsPageState extends State<SettingsPage> {
       DocumentSnapshot userSnapshot =
           await FirebaseFirestore.instance.collection('Users').doc(uid).get();
       if (userSnapshot.exists) {
-        Map<String, dynamic>? userData =
-            userSnapshot.data() as Map<String, dynamic>?; // Cast to expected type
+        Map<String, dynamic>? userData = userSnapshot.data()
+            as Map<String, dynamic>?; // Cast to expected type
         if (userData != null) {
           return userData['profilePicture'] as String;
         }
@@ -83,7 +88,8 @@ class _SettingsPageState extends State<SettingsPage> {
     // Return null if any error occurs
   }
 
-  CollectionReference _collectionRef = FirebaseFirestore.instance.collection('Users');
+  CollectionReference _collectionRef =
+      FirebaseFirestore.instance.collection('Users');
 
   Future<void> getData() async {
     // Get docs from collection reference
@@ -102,7 +108,8 @@ class _SettingsPageState extends State<SettingsPage> {
     // imageUrl = getImageUrl(uid!).toString();
     // getData();
 
-    CollectionReference newCollection = FirebaseFirestore.instance.collection('Users');
+    CollectionReference newCollection =
+        FirebaseFirestore.instance.collection('Users');
     final documentReference = newCollection
         .where('uid', isEqualTo: uid)
         .get()
@@ -167,9 +174,11 @@ class _SettingsPageState extends State<SettingsPage> {
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                 ),
                 Switch(
-                  value: Provider.of<ThemeProvider>(context, listen: false).isDarkMode,
+                  value: Provider.of<ThemeProvider>(context, listen: false)
+                      .isDarkMode,
                   onChanged: (value) =>
-                      Provider.of<ThemeProvider>(context, listen: false).toggleTheme(),
+                      Provider.of<ThemeProvider>(context, listen: false)
+                          .toggleTheme(),
                 )
               ],
             ),

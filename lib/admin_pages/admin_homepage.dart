@@ -1,4 +1,5 @@
 import 'package:colabb/admin_pages/admin_assignmentpage.dart';
+import 'package:colabb/admin_pages/admin_mentorroom/mentor_room.dart';
 import 'package:colabb/admin_pages/admin_schedulepage.dart';
 import 'package:colabb/admin_pages/admin_settings.dart';
 import 'package:colabb/admin_pages/admin_statspage.dart';
@@ -72,7 +73,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                     tabs: [
                       TabItem(title: 'Assignment'),
                       TabItem(title: 'Schedule'),
-                      TabItem(title: 'App Stats'),
+                      TabItem(title: 'Mentor Room'),
                     ],
                   ),
                 ),
@@ -82,7 +83,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
           children: [
             AdminAssignmentPage(),
             AdminScheduleUploadScreen(),
-            AdminStatsPage()
+            MentorRoomScreen(),
           ],
         ),
       ),

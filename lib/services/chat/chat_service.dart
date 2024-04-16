@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:colabb/models/mentorroom_message.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import '../../models/message.dart';
@@ -80,5 +81,54 @@ class ChatService {
         .collection("messages")
         .orderBy("timeStamp", descending: false)
         .snapshots();
+  }
+
+  // send message in mentor room
+  Future<void> sendMentorRoomMessage(String message, type, chatRoomID) async {
+    // get current user info
+    final String currentUserID = _auth.currentUser!.uid;
+    final String currentUserEmail = _auth.currentUser!.email!;
+    final Timestamp timeStamp = Timestamp.now();
+    // create a new message
+    MentorRoomMessage NewMentorRoomMessage = MentorRoomMessage(
+      senderID: currentUserID,
+      senderEmail: currentUserEmail,
+      message: message,
+      type: type,
+      timeStamp: timeStamp,
+    );
+    //add new message to database
+    await _firestore
+        .collection('mentor_rooms')
+        .doc(chatRoomID)
+        .collection('messages')
+        .add(NewMentorRoomMessage.toMap());
+  }
+
+  // get mentor room message
+  Stream<QuerySnapshot> getRoomMessages(String chatRoomID) {
+    return _firestore
+        .collection('mentor_rooms')
+        .doc(chatRoomID)
+        .collection('messages')
+        .orderBy('timeStamp', descending: false)
+        .snapshots();
+  }
+
+  // to check if a particular mentor_room exists or not
+  Future<bool> mentorRoomExist(String chatRoomID) async {
+    // Query 'mentor_rooms' collection to check if user is an admin
+    QuerySnapshot mentorRoomSnapshot = await _firestore
+        .collection('mentor_rooms')
+        .where('chat_room_ID', isEqualTo: chatRoomID)
+        .get();
+
+    if (mentorRoomSnapshot.docs.isNotEmpty) {
+      // mentor_room exists
+      return true;
+    } else {
+      // does not exist
+      return false;
+    }
   }
 }
