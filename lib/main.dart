@@ -5,7 +5,7 @@ import 'pages/mentor_grouppage.dart';
 import 'pages/schedule_page.dart';
 import 'services/auth/auth_gate.dart';
 import 'firebase_options.dart';
-import 'pages/settings_page.dart';
+import 'pages/profile_page.dart';
 import 'themes/theme_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';

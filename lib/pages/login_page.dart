@@ -56,7 +56,7 @@ class LoginPage extends StatelessWidget {
             Icon(
               Icons.dashboard_rounded,
               size: 70,
-              color: Theme.of(context).colorScheme.primary,
+              color: Color(0XFF9e8cf2),
             ),
             const SizedBox(height: 50),
             Center(
