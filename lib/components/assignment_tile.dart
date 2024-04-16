@@ -26,7 +26,8 @@ class AssignmentTile extends StatelessWidget {
       margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 25),
       padding: const EdgeInsets.all(20),
       child: ExpansionTile(
-        // trailing: Icon(Icons.picture_as_pdf),
+        iconColor: Color.fromARGB(255, 93, 82, 145),
+        collapsedIconColor: Color(0XFF9e8cf2),
         subtitle: Text('Last Date: $dueDate'),
         // backgroundColor: Colors.transparent,
         // backgroundColor: Colors.red,

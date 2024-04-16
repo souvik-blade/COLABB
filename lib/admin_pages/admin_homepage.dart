@@ -64,7 +64,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                     indicatorSize: TabBarIndicatorSize.tab,
                     dividerColor: Colors.transparent,
                     indicator: BoxDecoration(
-                      color: Color.fromARGB(255, 83, 90, 84),
+                      color: Color.fromARGB(255, 167, 153, 229),
                       borderRadius: BorderRadius.all(Radius.circular(10)),
                     ),
                     labelColor: Colors.white,

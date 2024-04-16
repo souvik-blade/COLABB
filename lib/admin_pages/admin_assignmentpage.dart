@@ -308,7 +308,7 @@ class _AdminAssignmentPageState extends State<AdminAssignmentPage> {
                       ),
                       height: 90,
                       minWidth: 120,
-                      color: Color.fromARGB(255, 13, 143, 130),
+                      color: Color.fromARGB(255, 70, 62, 109),
                       child: const Text("Add PDF"),
                       onPressed: () async {
                         await pickFile();
@@ -326,7 +326,7 @@ class _AdminAssignmentPageState extends State<AdminAssignmentPage> {
                       ),
                       height: 90,
                       minWidth: 120,
-                      color: Color.fromARGB(255, 13, 143, 130),
+                      color: Color.fromARGB(255, 70, 62, 109),
                       onPressed: () async {
                         await _uploadAssignment(
                           context,

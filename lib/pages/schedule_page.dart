@@ -32,6 +32,10 @@ class _SchedulePageState extends State<SchedulePage> {
         width: double.maxFinite,
         // height: 600,
         child: ContainedTabBarView(
+          tabBarProperties: TabBarProperties(
+            indicatorColor: Color(0XFF9e8cf2),
+            labelColor: Color(0XFF9e8cf2),
+          ),
           tabBarViewProperties:
               const TabBarViewProperties(physics: BouncingScrollPhysics()),
           // initialIndex: todaysIndex,

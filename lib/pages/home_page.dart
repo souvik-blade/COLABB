@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'assignments_page.dart';
 import 'chat_page.dart';
 import 'schedule_page.dart';
-import 'settings_page.dart';
+import 'profile_page.dart';
 import '../services/auth/auth_service.dart';
 import '../services/chat/chat_service.dart';
 import '../components/user_tile.dart';
@@ -29,35 +29,6 @@ class _HomePageState extends State<HomePage> {
   final ChatService _chatService = ChatService();
   final AuthService _authService = AuthService();
 
-  //theme data
-
-  final _bottomNavigationBarItems = [
-    const BottomNavigationBarItem(
-      icon: Icon(Icons.dashboard_outlined,
-          color: Color.fromARGB(255, 105, 98, 98), size: 30),
-      activeIcon: Icon(Icons.dashboard_rounded, size: 30, color: Colors.blueAccent),
-      label: "Home",
-    ),
-    const BottomNavigationBarItem(
-      icon: Icon(CupertinoIcons.time, color: Color.fromARGB(255, 105, 98, 98), size: 30),
-      activeIcon: Icon(CupertinoIcons.time_solid, size: 30, color: Colors.blueAccent),
-      label: "Home",
-    ),
-    const BottomNavigationBarItem(
-      icon: Icon(CupertinoIcons.list_bullet_below_rectangle,
-          color: Color.fromARGB(255, 105, 98, 98), size: 30),
-      activeIcon:
-          Icon(CupertinoIcons.list_bullet_indent, size: 30, color: Colors.blueAccent),
-      label: "Home",
-    ),
-    const BottomNavigationBarItem(
-      icon: Icon(CupertinoIcons.person_crop_square,
-          color: Color.fromARGB(255, 105, 98, 98), size: 30),
-      activeIcon: Icon(CupertinoIcons.person_crop_square_fill,
-          size: 30, color: Colors.blueAccent),
-      label: "Home",
-    ),
-  ];
   @override
   Widget build(BuildContext context) {
     bool isDarkMode = Provider.of<ThemeProvider>(context, listen: false).isDarkMode;
@@ -68,7 +39,7 @@ class _HomePageState extends State<HomePage> {
             : ThemeData.light().copyWith().canvasColor,
         gap: 8,
         iconSize: 28,
-        activeColor: Colors.teal,
+        activeColor: Color(0XFF9e8cf2),
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
         tabMargin: EdgeInsets.all(10),
         duration: Duration(milliseconds: 500),
@@ -77,14 +48,12 @@ class _HomePageState extends State<HomePage> {
         tabBackgroundColor: isDarkMode
             ? ThemeData.dark().copyWith().highlightColor
             : ThemeData.light().copyWith().highlightColor,
-
         tabs: const [
           GButton(
             duration: Duration(seconds: 5),
 
             icon: Icons.dashboard_rounded,
 
-            iconActiveColor: Colors.teal,
             text: 'Home',
             // style: GnavStyle.oldSchool,
           ),
@@ -108,21 +77,6 @@ class _HomePageState extends State<HomePage> {
                 duration: const Duration(milliseconds: 200), curve: Curves.easeIn);
           });
         },
-        // BottomNavigationBar(
-        //   showSelectedLabels: false,
-        //   showUnselectedLabels: false,
-
-        //   // backgroundColor: Colors.blue,
-        //   currentIndex: _currentIndex,
-        //   items: _bottomNavigationBarItems,
-        //   onTap: (index) {
-        //     setState(() {
-        //       _pageController.animateToPage(index,
-        //           duration: const Duration(milliseconds: 200),
-        //           curve: Curves.easeIn);
-        //     });
-        //   },
-        // ),
       ),
       body: PageView(
           controller: _pageController,
@@ -198,8 +152,10 @@ class _HomePageState extends State<HomePage> {
     if (userData["email"] != _authService.getCurrentUser()?.email) {
       return UserTile(
         text: userData["name"],
+        profilePicture: userData["profilePicture"] ?? "",
         onTap: () {
           // tapped on a user -> go to chat page
+
           Navigator.push(
             context,
             MaterialPageRoute(
