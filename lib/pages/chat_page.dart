@@ -7,10 +7,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class ChatPage extends StatefulWidget {
-  final String receiverEmail;
+  final String receiverFirstname;
+  final String receiverLastname;
   final String receiverID;
 
-  ChatPage({required this.receiverEmail, required this.receiverID});
+  ChatPage(
+      {required this.receiverFirstname,
+      required this.receiverLastname,
+      required this.receiverID});
 
   @override
   State<ChatPage> createState() => _ChatPageState();
@@ -73,7 +77,7 @@ class _ChatPageState extends State<ChatPage> {
     // if there is something inside the textfield
     if (_messageController.text.isNotEmpty) {
       await _chatService.sendMessage(
-          widget.receiverID, _messageController.text);
+          widget.receiverID, _messageController.text, 'text');
 
       // clear text controller
       _messageController.clear();
@@ -86,7 +90,7 @@ class _ChatPageState extends State<ChatPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.receiverEmail),
+        title: Text("${widget.receiverFirstname} ${widget.receiverLastname}"),
         backgroundColor: Colors.transparent,
       ),
       body: Column(

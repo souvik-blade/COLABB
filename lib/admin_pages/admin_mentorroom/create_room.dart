@@ -36,7 +36,8 @@ class _CreateMentorRoomState extends State<CreateMentorRoom> {
         .then((map) {
       setState(() {
         memberList.add({
-          'name': map['name'],
+          'first name': map['first name'],
+          'last name': map['last name'],
           'email': map['email'],
           'uid': map['uid'],
           'isadmin': true,
@@ -51,7 +52,7 @@ class _CreateMentorRoomState extends State<CreateMentorRoom> {
     });
     await _firestore
         .collection('Users')
-        .where('name', isEqualTo: _searchUserController.text)
+        .where('first name', isEqualTo: _searchUserController.text)
         .get()
         .then((value) {
       setState(() {
@@ -72,7 +73,8 @@ class _CreateMentorRoomState extends State<CreateMentorRoom> {
     if (!isAlreadyExist) {
       setState(() {
         memberList.add({
-          'name': userMap?['name'],
+          'first name': userMap?['first name'],
+          'last name': userMap?['last name'],
           'email': userMap?['email'],
           'uid': userMap?['uid'],
           'isadmin': false
@@ -95,7 +97,7 @@ class _CreateMentorRoomState extends State<CreateMentorRoom> {
       isCreateRoomLoading = true;
     });
     // List<String> ids = [];
-    String chatRoomName = memberList[0]['name'] + "'s chat_room";
+    String chatRoomName = memberList[0]['first name'] + "'s chat_room";
 
     String? chatRoomID = _auth.currentUser?.uid;
     await _firestore.collection('mentor_rooms').doc(chatRoomID).set({
@@ -122,7 +124,7 @@ class _CreateMentorRoomState extends State<CreateMentorRoom> {
         .doc(chatRoomID)
         .collection('messages')
         .add({
-      'message': "${memberList[0]['name']} created this group",
+      'message': "${memberList[0]['first name']} created this group",
       'type': 'announce',
       'timeStamp': DateTime.now(),
     });
@@ -170,7 +172,7 @@ class _CreateMentorRoomState extends State<CreateMentorRoom> {
                         itemBuilder: (context, index) {
                           return CircularAvatar(
                             onTap: () => onRemoveMember(index),
-                            title: memberList[index]['name'],
+                            title: memberList[index]['first name'],
                           );
                         },
                       ),
@@ -190,7 +192,7 @@ class _CreateMentorRoomState extends State<CreateMentorRoom> {
                 : userMap != null
                     ? AddUserTile(
                         onTap: onResultTap,
-                        title: userMap?['name'],
+                        title: userMap?['first name'],
                       )
                     : SizedBox(),
           ],

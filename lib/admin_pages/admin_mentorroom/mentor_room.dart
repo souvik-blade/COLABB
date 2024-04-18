@@ -20,6 +20,7 @@ class _MentorRoomScreenState extends State<MentorRoomScreen> {
   final TextEditingController _messageController = TextEditingController();
   AuthService _authService = AuthService();
   ChatService _chatService = ChatService();
+  dynamic firstName;
 
   // for textfield focus
   FocusNode myFocusNode = FocusNode();
@@ -69,8 +70,8 @@ class _MentorRoomScreenState extends State<MentorRoomScreen> {
   void sendmessage() async {
     // if there is something inside the textfield
     if (_messageController.text.isNotEmpty) {
-      await _chatService.sendMentorRoomMessage(
-          _messageController.text, 'text', _authService.getCurrentUser()!.uid);
+      await _chatService.sendMentorRoomMessage(_messageController.text, 'text',
+          _authService.getCurrentUser()!.uid, firstName);
 
       // clear text controller
       _messageController.clear();
@@ -81,32 +82,39 @@ class _MentorRoomScreenState extends State<MentorRoomScreen> {
 
   @override
   Widget build(BuildContext context) {
+    String chatRoomID = _authService.getCurrentUser()!.uid;
     return Scaffold(
-      body: _buildMessageList(),
+      body: FutureBuilder(
+        future: FirebaseFirestore.instance
+            .collection('mentor_rooms')
+            .doc(chatRoomID)
+            .get(),
+        builder: ((context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Text('Error: ${snapshot.error}');
+          } else if (!snapshot.hasData || !snapshot.data!.exists) {
+            return _buildRoomNotCreated(context);
+          } else {
+            final userData = snapshot.data!.data();
+            firstName = userData?['members'][0]['first name'];
+            return _buildMessageList();
+          }
+        }),
+      ),
     );
   }
 
   // build message list
   Widget _buildMessageList() {
     String chatRoomID = _authService.getCurrentUser()!.uid;
-    // return FutureBuilder(
-    //   future: _chatService.mentorRoomExist(chatRoomID),
-    //   builder: (context, snapshot) {
-    //     if (snapshot.connectionState == ConnectionState.waiting) {
-    //       // Future hasn't completed yet, show a loading indicator or placeholder
-    //       return CircularProgressIndicator();
-    //     } else if (snapshot.hasError) {
-    //       // Error occurred while checking for mentor room existence
-    //       return Text("Error: ${snapshot.error}");
-    //     } else if (snapshot.data == true) {
-    //       // Mentor room exists, return the stream builder for messages
     return Column(
       children: [
         Expanded(
           child: StreamBuilder(
             stream: _chatService.getRoomMessages(chatRoomID),
             builder: (context, snapshot) {
-              // Remaining code for StreamBuilder...
               // errors
               if (snapshot.hasError) {
                 return const Text("Error");
@@ -130,32 +138,6 @@ class _MentorRoomScreenState extends State<MentorRoomScreen> {
         _buildUserInput(),
       ],
     );
-    //     } else {
-    //       // Mentor room does not exist, display message and create room button
-    //       return Column(
-    //         mainAxisAlignment: MainAxisAlignment.center,
-    //         children: [
-    //           Text(
-    //             'No students Assigned',
-    //             style: TextStyle(fontSize: 24),
-    //           ),
-    //           SizedBox(height: 20),
-    //           MyButton(
-    //             text: 'Create Room',
-    //             onTap: () {
-    //               Navigator.push(
-    //                 context,
-    //                 MaterialPageRoute(
-    //                   builder: (context) => CreateMentorRoom(),
-    //                 ),
-    //               );
-    //             },
-    //           ),
-    //         ],
-    //       );
-    //     }
-    //   },
-    // );
   }
 
   // build message item
@@ -180,6 +162,7 @@ class _MentorRoomScreenState extends State<MentorRoomScreen> {
             message: data["message"],
             isCurrentUser: isCurrentUser,
             type: data['type'],
+            name: data["first name"],
           )
         ],
       ),
@@ -221,40 +204,26 @@ class _MentorRoomScreenState extends State<MentorRoomScreen> {
   }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-  // return Scaffold(
-  //     body: Column(
-  //       mainAxisAlignment: MainAxisAlignment.center,
-  //       children: [
-  //         Text(
-  //           'No students Assigned',
-  //           style: TextStyle(fontSize: 24),
-  //         ),
-  //         SizedBox(height: 20),
-  //         MyButton(
-  //             text: 'Create Room',
-  //             onTap: () {
-  //               Navigator.push(
-  //                 context,
-  //                 MaterialPageRoute(
-  //                   builder: (context) => CreateMentorRoom(),
-  //                 ),
-  //               );
-  //             }),
-  //       ],
-  //     ),
-  //   );
-
-
-
-  
+Widget _buildRoomNotCreated(BuildContext context) {
+  return Column(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      Text(
+        'No students Assigned',
+        style: TextStyle(fontSize: 24),
+      ),
+      SizedBox(height: 20),
+      MyButton(
+        text: 'Create Room',
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => CreateMentorRoom(),
+            ),
+          );
+        },
+      ),
+    ],
+  );
+}

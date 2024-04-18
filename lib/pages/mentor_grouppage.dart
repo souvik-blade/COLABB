@@ -21,6 +21,7 @@ class _MentorRoomState extends State<MentorRoom> {
   final TextEditingController _messageController = TextEditingController();
   AuthService _auth = AuthService();
   ChatService _chatService = ChatService();
+  dynamic firstName;
 
   // for textfield focus
   FocusNode myFocusNode = FocusNode();
@@ -28,7 +29,6 @@ class _MentorRoomState extends State<MentorRoom> {
   @override
   void initState() {
     super.initState();
-    getList();
 
     // add listener to focus node
     myFocusNode.addListener(() {
@@ -67,21 +67,17 @@ class _MentorRoomState extends State<MentorRoom> {
     );
   }
 
-  List mentorroomlist = [];
+  //List mentorroomlist = [];
+  dynamic chatRoomID;
 
-  void getList() async {
+  Future<QuerySnapshot<Map<String, dynamic>>> getList() {
     String? uid = _auth.getCurrentUser()?.uid;
-
-    await FirebaseFirestore.instance
+    return FirebaseFirestore.instance
         .collection('Users')
         .doc(uid)
         .collection('mentor_room')
-        .get()
-        .then((value) {
-      setState(() {
-        mentorroomlist = value.docs;
-      });
-    });
+        .snapshots()
+        .first;
   }
 
   // send message
@@ -89,7 +85,7 @@ class _MentorRoomState extends State<MentorRoom> {
     // if there is something inside the textfield
     if (_messageController.text.isNotEmpty) {
       await _chatService.sendMentorRoomMessage(
-          _messageController.text, 'text', mentorroomlist[0]['chat_room_id']);
+          _messageController.text, 'text', chatRoomID, firstName);
 
       // clear text controller
       _messageController.clear();
@@ -100,46 +96,61 @@ class _MentorRoomState extends State<MentorRoom> {
 
   @override
   Widget build(BuildContext context) {
+    String? uid = _auth.getCurrentUser()?.uid;
     return Scaffold(
-        appBar: AppBar(
-          toolbarHeight: 100,
-          title: const Text(
-            "Mentor's Room",
-            style: TextStyle(fontSize: 50, fontWeight: FontWeight.w200),
-          ),
-          backgroundColor: Colors.transparent,
+      appBar: AppBar(
+        toolbarHeight: 100,
+        title: const Text(
+          "Mentor's Room",
+          style: TextStyle(fontSize: 50, fontWeight: FontWeight.w200),
         ),
-        // bottomNavigationBar: MyBottomAppBar(),
-        body: _buildMessageList()
-        // SingleChildScrollView(
-        //   // margin: EdgeInsets.only(top: 32),
-        //   // alignment: Alignment.center,
-        //   child: Column(
-        //     children: [
-        //       CircleAvatar(
-        //         radius: 46,
-        //       ),
-        //       SizedBox(
-        //         height: 16,
-        //       ),
-        //       Text('mentor'),
-        //       Container(child: _buildMessageList()),
-        //     ],
-        //   ),
-        // ),
-        );
+        backgroundColor: Colors.transparent,
+      ),
+      body: FutureBuilder(
+        future: getList(),
+        builder: ((context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Text('Error: ${snapshot.error}');
+          } else if (snapshot.data!.docs.isEmpty) {
+            return _buildRoomNotCreated();
+          } else {
+            final userRoomData = snapshot.data!.docs;
+            chatRoomID = userRoomData[0]['chat_room_id'];
+            return FutureBuilder<DocumentSnapshot>(
+                future: FirebaseFirestore.instance
+                    .collection('Users')
+                    .doc(uid)
+                    .get(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Text('Error: ${snapshot.error}');
+                  } else if (!snapshot.hasData || !snapshot.data!.exists) {
+                    return Text('User not found.');
+                  } else {
+                    final userData =
+                        snapshot.data!.data() as Map<String, dynamic>;
+                    firstName = userData['first name'];
+                    return _buildMessageList();
+                  }
+                });
+          }
+        }),
+      ),
+    );
   }
 
   // build message list
   Widget _buildMessageList() {
-    String chatRoomID = mentorroomlist[0]['chat_room_id'];
     return Column(
       children: [
         Expanded(
           child: StreamBuilder(
             stream: _chatService.getRoomMessages(chatRoomID),
             builder: (context, snapshot) {
-              // Remaining code for StreamBuilder...
               // errors
               if (snapshot.hasError) {
                 return const Text("Error");
@@ -147,17 +158,21 @@ class _MentorRoomState extends State<MentorRoom> {
 
               // loading
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Text("Loading");
+                return Center(child: CircularProgressIndicator());
               }
 
               // return list view
-              return ListView(
-                shrinkWrap: true,
-                controller: _scrollController,
-                children: snapshot.data!.docs
-                    .map((doc) => _buildMessageItem(doc))
-                    .toList(),
-              );
+              if (snapshot.hasData) {
+                return ListView(
+                  shrinkWrap: true,
+                  controller: _scrollController,
+                  children: snapshot.data!.docs
+                      .map((doc) => _buildMessageItem(doc))
+                      .toList(),
+                );
+              } else {
+                return SizedBox();
+              }
             },
           ),
         ),
@@ -188,6 +203,7 @@ class _MentorRoomState extends State<MentorRoom> {
             message: data["message"],
             isCurrentUser: isCurrentUser,
             type: data['type'],
+            name: data['first name'],
           )
         ],
       ),
@@ -227,4 +243,13 @@ class _MentorRoomState extends State<MentorRoom> {
       ),
     );
   }
+}
+
+Widget _buildRoomNotCreated() {
+  return Center(
+    child: Text(
+      "Mentor Room isn't available at the moment",
+      style: TextStyle(fontSize: 24),
+    ),
+  );
 }

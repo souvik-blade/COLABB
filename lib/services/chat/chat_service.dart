@@ -38,7 +38,7 @@ class ChatService {
   }
 
   // send message
-  Future<void> sendMessage(String receiverID, message) async {
+  Future<void> sendMessage(String receiverID, message, type) async {
     // get current user info
     final String currentUserID = _auth.currentUser!.uid;
     final String currentUserEmail = _auth.currentUser!.email!;
@@ -51,6 +51,7 @@ class ChatService {
       receiverID: receiverID,
       message: message,
       timeStamp: timeStamp,
+      type: type,
     );
 
     // construct a chat room ID for the two users(sorted to ensure uniqueness)
@@ -84,7 +85,8 @@ class ChatService {
   }
 
   // send message in mentor room
-  Future<void> sendMentorRoomMessage(String message, type, chatRoomID) async {
+  Future<void> sendMentorRoomMessage(
+      String message, type, chatRoomID, firstName) async {
     // get current user info
     final String currentUserID = _auth.currentUser!.uid;
     final String currentUserEmail = _auth.currentUser!.email!;
@@ -92,6 +94,7 @@ class ChatService {
     // create a new message
     MentorRoomMessage NewMentorRoomMessage = MentorRoomMessage(
       senderID: currentUserID,
+      firstName: firstName,
       senderEmail: currentUserEmail,
       message: message,
       type: type,
@@ -113,22 +116,5 @@ class ChatService {
         .collection('messages')
         .orderBy('timeStamp', descending: false)
         .snapshots();
-  }
-
-  // to check if a particular mentor_room exists or not
-  Future<bool> mentorRoomExist(String chatRoomID) async {
-    // Query 'mentor_rooms' collection to check if user is an admin
-    QuerySnapshot mentorRoomSnapshot = await _firestore
-        .collection('mentor_rooms')
-        .where('chat_room_ID', isEqualTo: chatRoomID)
-        .get();
-
-    if (mentorRoomSnapshot.docs.isNotEmpty) {
-      // mentor_room exists
-      return true;
-    } else {
-      // does not exist
-      return false;
-    }
   }
 }

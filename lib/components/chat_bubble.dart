@@ -1,3 +1,5 @@
+import 'package:flutter/services.dart';
+
 import '../themes/theme_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -6,11 +8,13 @@ class ChatBubble extends StatelessWidget {
   final String message;
   final bool isCurrentUser;
   final String type;
+  final name;
   const ChatBubble({
     super.key,
     required this.message,
     required this.isCurrentUser,
     required this.type,
+    this.name,
   });
 
   @override
@@ -36,12 +40,27 @@ class ChatBubble extends StatelessWidget {
                     bottomRight: Radius.circular(12))),
         padding: const EdgeInsets.all(16),
         margin: const EdgeInsets.symmetric(vertical: 2.5, horizontal: 25),
-        child: Text(
-          message,
-          style: TextStyle(
-            color: isDarkMode ? Colors.white : Colors.black,
-          ),
-        ),
+        child: name != null
+            ? Column(
+                crossAxisAlignment: isCurrentUser
+                    ? CrossAxisAlignment.end
+                    : CrossAxisAlignment.start,
+                children: [
+                  Text(name),
+                  Text(
+                    message,
+                    style: TextStyle(
+                      color: isDarkMode ? Colors.white : Colors.black,
+                    ),
+                  ),
+                ],
+              )
+            : Text(
+                message,
+                style: TextStyle(
+                  color: isDarkMode ? Colors.white : Colors.black,
+                ),
+              ),
       );
     } else {
       return Center(

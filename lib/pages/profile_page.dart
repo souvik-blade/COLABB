@@ -50,7 +50,8 @@ class _SettingsPageState extends State<SettingsPage> {
             return Text('User not found.');
           } else {
             final userData = snapshot.data!.data() as Map<String, dynamic>;
-            final userName = userData['name'];
+            final userFirstName = userData['first name'];
+            final userLastName = userData['last name'];
             return Column(
               children: [
                 Stack(
@@ -86,7 +87,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 ),
                 SizedBox(height: 20),
                 Text(
-                  userName.toString().toUpperCase(),
+                  '$userFirstName $userLastName',
                   style: TextStyle(fontSize: 40, fontWeight: FontWeight.w300),
                 ),
                 Container(
@@ -101,11 +102,13 @@ class _SettingsPageState extends State<SettingsPage> {
                     children: [
                       Text(
                         "Dark Mode",
-                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.w600),
                       ),
                       Switch(
                         value:
-                            Provider.of<ThemeProvider>(context, listen: false).isDarkMode,
+                            Provider.of<ThemeProvider>(context, listen: false)
+                                .isDarkMode,
                         onChanged: (value) =>
                             Provider.of<ThemeProvider>(context, listen: false)
                                 .toggleTheme(),
@@ -125,7 +128,8 @@ class _SettingsPageState extends State<SettingsPage> {
                     children: [
                       Text(
                         "Log Out",
-                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.w600),
                       ),
                       IconButton(
                         onPressed: () {
@@ -187,7 +191,10 @@ class _SettingsPageState extends State<SettingsPage> {
 
       await uploadTask.whenComplete(() async {
         String downloadURL = await storageReference.getDownloadURL();
-        await FirebaseFirestore.instance.collection('Users').doc(userId).update({
+        await FirebaseFirestore.instance
+            .collection('Users')
+            .doc(userId)
+            .update({
           'profilePicture': downloadURL,
         });
 

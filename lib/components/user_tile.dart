@@ -2,10 +2,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class UserTile extends StatelessWidget {
-  final String text;
+  final String firstName;
+  final String lastName;
   final String profilePicture;
   final void Function()? onTap;
-  const UserTile({super.key, required this.text, required this.onTap, required this.profilePicture});
+  const UserTile(
+      {super.key,
+      required this.firstName,
+      required this.lastName,
+      required this.onTap,
+      required this.profilePicture});
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +30,8 @@ class UserTile extends StatelessWidget {
             CircleAvatar(
               // foregroundColor: Colors.red,
 
-              backgroundColor: Colors.grey[300], // Set a default background color
+              backgroundColor:
+                  Colors.grey[300], // Set a default background color
               child: (profilePicture == '')
                   ? // Ensure the image is properly fit within the circle
                   Icon(
@@ -45,7 +52,7 @@ class UserTile extends StatelessWidget {
 
             // user name
             Text(
-              text,
+              "$firstName $lastName",
               style: TextStyle(fontSize: 18),
             ),
           ],

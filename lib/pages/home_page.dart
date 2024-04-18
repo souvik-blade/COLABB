@@ -31,7 +31,8 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    bool isDarkMode = Provider.of<ThemeProvider>(context, listen: false).isDarkMode;
+    bool isDarkMode =
+        Provider.of<ThemeProvider>(context, listen: false).isDarkMode;
     return Scaffold(
       bottomNavigationBar: GNav(
         backgroundColor: isDarkMode
@@ -74,7 +75,8 @@ class _HomePageState extends State<HomePage> {
         onTabChange: (index) {
           setState(() {
             _pageController.animateToPage(index,
-                duration: const Duration(milliseconds: 200), curve: Curves.easeIn);
+                duration: const Duration(milliseconds: 200),
+                curve: Curves.easeIn);
           });
         },
       ),
@@ -138,7 +140,8 @@ class _HomePageState extends State<HomePage> {
           //return list view
           return ListView(
             children: snapshot.data!
-                .map<Widget>((userData) => _buildUserListItem(userData, context))
+                .map<Widget>(
+                    (userData) => _buildUserListItem(userData, context))
                 .toList(),
           );
         }),
@@ -147,11 +150,13 @@ class _HomePageState extends State<HomePage> {
   }
 
   //build individual list tile for user
-  Widget _buildUserListItem(Map<String, dynamic> userData, BuildContext context) {
+  Widget _buildUserListItem(
+      Map<String, dynamic> userData, BuildContext context) {
     // display all users except current user
     if (userData["email"] != _authService.getCurrentUser()?.email) {
       return UserTile(
-        text: userData["name"],
+        firstName: userData["first name"],
+        lastName: userData['last name'],
         profilePicture: userData["profilePicture"] ?? "",
         onTap: () {
           // tapped on a user -> go to chat page
@@ -160,7 +165,8 @@ class _HomePageState extends State<HomePage> {
             context,
             MaterialPageRoute(
               builder: (context) => ChatPage(
-                receiverEmail: userData["email"],
+                receiverFirstname: userData["first name"],
+                receiverLastname: userData['last name'],
                 receiverID: userData["uid"],
               ),
             ),

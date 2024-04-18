@@ -6,6 +6,7 @@ class Message {
   final String receiverID;
   final String message;
   final Timestamp timeStamp;
+  final String type;
 
   Message({
     required this.senderID,
@@ -13,6 +14,7 @@ class Message {
     required this.receiverID,
     required this.message,
     required this.timeStamp,
+    required this.type,
   });
 
   // convert to a map
@@ -23,6 +25,7 @@ class Message {
       'receiverID': receiverID,
       'message': message,
       'timeStamp': timeStamp,
+      'type': type
     };
   }
 }
