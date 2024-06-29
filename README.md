@@ -16,17 +16,14 @@ The **Colabb** project aims to develop a comprehensive mobile application tailor
 <img width="205px" alt="Example" src="https://github.com/nerd-sourav/COLABB/assets/72149259/4eb8771c-fa2e-4d01-8270-d207ce06f05e"/>
 <img width="205px" alt="Example" src="https://github.com/nerd-sourav/COLABB/assets/72149259/73ce6195-9810-4b24-b7a9-0555d01060f2"/>
 <img width="205px" alt="Example" src="https://github.com/nerd-sourav/COLABB/assets/72149259/93abe745-2719-4617-8fa8-d8a38f4dfec8"/>
-
 <img width="205px" alt="Example" src="https://github.com/nerd-sourav/COLABB/assets/72149259/7805d2cc-ada0-4512-befb-0054b1bf7911"/>
 <br>
 <br>
 <br>
 
 <img width="205px" alt="Example" src="https://github.com/nerd-sourav/COLABB/assets/72149259/3444c7e0-d744-43e4-a45d-044af9e589e5"/>
-
 <img width="205px" alt="Example" src="https://github.com/nerd-sourav/COLABB/assets/72149259/209239ad-7edc-4c41-b4f3-44a208aacb08"/>
 <img width="205px" alt="Example" src="https://github.com/nerd-sourav/COLABB/assets/72149259/ab089098-8de7-4d1c-9793-8472192eccfb"/>
-
 <img width="205px" alt="Example" src="https://github.com/nerd-sourav/COLABB/assets/72149259/fb45482f-836e-4cc6-8957-1fdfce60faee"/>
 
 
